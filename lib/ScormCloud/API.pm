@@ -199,6 +199,8 @@ sub process_request
         confess 'Invalid API response data' if $self->die_on_bad_response;
     }
 
+    $self->_dump_data($data) if $self->dump_api_results;
+
     return $data;
 }
 

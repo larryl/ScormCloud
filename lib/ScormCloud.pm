@@ -179,6 +179,21 @@ has 'dump_response_data' => (
                              default => 0,
                             );
 
+=item dump_api_results
+
+Set to true to dump results grabbed from response data by each API
+call.  Default is false.
+
+Parsing is currently done with L<XML::Simple>.
+
+=cut
+
+has 'dump_api_results' => (
+                           is      => 'rw',
+                           isa     => 'Bool',
+                           default => 0,
+                          );
+
 =item die_on_bad_response
 
 Set to true to die if the API response data is malformed or invalid
