@@ -104,24 +104,15 @@ sub getCourseList
         sub {
             my ($response) = @_;
 
-            my $courselist = $response->{courselist};
-            if ($courselist->{title})
-            {
-                return [$courselist];    # single item
-            }
-            else
-            {
-                my @list = ();
-                foreach my $id (keys %{$courselist})
-                {
-                    $courselist->{$id}->{id} = $id;
-                    push @list, delete $courselist->{$id};
-                }
-                return \@list;
-            }
+            return $response->{courselist};
         },
-        {xml_parser => {GroupTags => {'courselist' => 'course'}}}
-                                 );
+        {
+         xml_parser => {
+                        ForceArray => ['course'],
+                        GroupTags  => {'courselist' => 'course'},
+                       }
+        }
+    );
 }
 
 1;

@@ -70,15 +70,17 @@ sub getScormCloudObject
 {
     my ($AppID, $SecretKey, $ServiceURL) = getTestConfigInfo();
 
-    return
-      ScormCloud->new(
-                      app_id              => $AppID,
-                      secret_key          => $SecretKey,
-                      service_url         => $ServiceURL,
-                      die_on_bad_response => 1,
-                      dump_response_xml   => 1,
-                      dump_response_data  => 1,
-                     );
+    return ScormCloud->new(
+        app_id              => $AppID,
+        secret_key          => $SecretKey,
+        service_url         => $ServiceURL,
+        die_on_bad_response => 1,
+
+        #dump_request_url    => 1,
+        #dump_response_xml   => 1,
+        #dump_response_data  => 1,
+        #dump_api_results    => 1,
+                          );
 }
 
 1;

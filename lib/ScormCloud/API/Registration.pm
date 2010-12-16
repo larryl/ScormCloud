@@ -40,7 +40,7 @@ requires 'process_request';
 
 =head1 METHODS
 
-=head2 getRegistrationResult ( I<registration_id> )
+=head2 getRegistrationResult ( I<registration_id> [ , I<results_format> ] )
 
 Given a registration ID, returns registration results.
 
@@ -67,6 +67,18 @@ sub getRegistrationResult
               ref($response->{registrationreport}) eq 'HASH'
               ? $response->{registrationreport}
               : undef;
+        },
+        {
+         xml_parser => {
+                     ForceArray => [qw(activity comment interaction objective)],
+                     GroupTags  => {
+                                   'children'              => 'activity',
+                                   'comments_from_learner' => 'comment',
+                                   'comments_from_lms'     => 'comment',
+                                   'interactions'          => 'interaction',
+                                   'objectives'            => 'objective',
+                                  },
+                       }
         }
     );
 }
@@ -87,24 +99,18 @@ sub getRegistrationList
         sub {
             my ($response) = @_;
 
-            my $registrationlist = $response->{registrationlist};
-            if ($registrationlist->{courseid})
-            {
-                return [$registrationlist];    # single item
-            }
-            else
-            {
-                my @list = ();
-                foreach my $id (keys %{$registrationlist})
-                {
-                    $registrationlist->{$id}->{id} = $id;
-                    push @list, delete $registrationlist->{$id};
-                }
-                return \@list;
-            }
+            return $response->{registrationlist};
         },
-        {xml_parser => {GroupTags => {'registrationlist' => 'registration'}}}
-                                 );
+        {
+         xml_parser => {
+                        ForceArray => ['registration', 'instance'],
+                        GroupTags  => {
+                                      'registrationlist' => 'registration',
+                                      'instances'        => 'instance',
+                                     },
+                       }
+        }
+    );
 }
 
 1;

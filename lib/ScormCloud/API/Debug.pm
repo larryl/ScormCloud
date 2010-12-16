@@ -55,7 +55,7 @@ sub ping
         sub {
             my ($response) = @_;
 
-            return ref($response->{pong}) eq 'HASH' ? 1 : 0;
+            exists $response->{pong} ? 1 : 0;
         }
     );
 }
@@ -76,7 +76,7 @@ sub authPing
         sub {
             my ($response) = @_;
 
-            return ref($response->{pong}) eq 'HASH' ? 1 : 0;
+            exists $response->{pong} ? 1 : 0;
         }
     );
 }

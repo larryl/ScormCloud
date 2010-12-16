@@ -96,8 +96,13 @@ sub request
         {
             $self->_dump_data($response->content) if $self->dump_response_xml;
 
-            $response_data = XML::Simple->new->XMLin($response->content,
-                                                     %{$args->{xml_parser}});
+            $response_data =
+              XML::Simple->new->XMLin(
+                                      $response->content,
+                                      KeyAttr       => [],
+                                      SuppressEmpty => '',
+                                      %{$args->{xml_parser}}
+                                     );
 
             $self->_dump_data($response_data) if $self->dump_response_data;
 

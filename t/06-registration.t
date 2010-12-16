@@ -1,6 +1,6 @@
 #!perl -T
 
-use Test::More tests => 15;
+use Test::More tests => 17;
 
 require './t/_test_util.pl';
 
@@ -18,7 +18,7 @@ can_ok($ScormCloud, 'getRegistrationResult');
 
 SKIP:
 {
-    skip 'No registrations exist for further testing', 12
+    skip 'No registrations exist for further testing', 14
       unless @{$registration_list} > 0;
 
     my $registration_id = $registration_list->[0]->{id};
@@ -45,8 +45,9 @@ SKIP:
     isa_ok($result, 'HASH', '$ScormCloud->getRegistrationResult');
 
     %expected = (
-                 format => '',
-                 regid  => '',
+                 activity => 'ARRAY',
+                 format   => '',
+                 regid    => '',
                 );
 
     foreach my $key (sort keys %expected)
