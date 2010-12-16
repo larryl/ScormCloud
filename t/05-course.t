@@ -1,6 +1,6 @@
 #!perl -T
 
-use Test::More tests => 5;
+use Test::More tests => 11;
 
 require './t/_test_util.pl';
 
@@ -16,16 +16,33 @@ isa_ok($course_list, 'ARRAY', '$ScormCloud->getCourseList');
 
 ##########
 
-can_ok($ScormCloud, 'courseExists');
+can_ok($ScormCloud, 'getMetadata');
 
 is($ScormCloud->courseExists('i do not exist'), 0, '$ScormCloud->courseExists');
 
+can_ok($ScormCloud, 'courseExists');
+
 SKIP:
 {
-    skip 'No courses for $ScormCloud->courseExists check', 1
+    skip 'No courses exist for further testing', 6
       unless @{$course_list} > 0;
 
     my $course_id = $course_list->[0]->{id};
     is($ScormCloud->courseExists($course_id), 1, '$ScormCloud->courseExists');
+
+    my $metadata = $ScormCloud->getMetadata($course_id);
+    isa_ok($metadata, 'HASH', '$ScormCloud->getMetadata');
+
+    my %expected = (
+                    metadata => 'HASH',
+                    object   => 'HASH',
+                   );
+
+    foreach my $key (sort keys %expected)
+    {
+        ok(exists $metadata->{$key}, "\$ScormCloud->getMetadata includes $key");
+        is(ref($metadata->{$key}),
+            $expected{$key}, "ref(\$ScormCloud->getMetadata->{$key})");
+    }
 }
 

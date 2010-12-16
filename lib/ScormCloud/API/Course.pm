@@ -64,6 +64,30 @@ sub courseExists
     );
 }
 
+=head2 getMetadata ( I<course_id> )
+
+Given a course ID, returns course metadata.
+
+=cut
+
+sub getMetadata
+{
+    my ($self, $course_id) = @_;
+
+    croak "Missing course_id" unless $course_id;
+
+    return $self->process_request(
+        {method => 'course.getMetadata', courseid => $course_id},
+        sub {
+            my ($response) = @_;
+
+            return ref($response->{package}) eq 'HASH'
+              ? $response->{package}
+              : undef;
+        }
+    );
+}
+
 =head2 getCourseList
 
 Returns an arrayref containing a list of courses.
