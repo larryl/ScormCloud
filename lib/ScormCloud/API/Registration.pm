@@ -34,9 +34,42 @@ namespace.  See L<ScormCloud> for more info.
 
 =cut
 
+use Carp;
+
 requires 'process_request';
 
 =head1 METHODS
+
+=head2 getRegistrationResult ( I<registration_id> )
+
+Given a registration ID, returns registration results.
+
+=cut
+
+sub getRegistrationResult
+{
+    my ($self, $registration_id, $results_format) = @_;
+
+    croak "Missing registration_id" unless $registration_id;
+
+    my %params = (
+                  method => 'registration.getRegistrationResult',
+                  regid  => $registration_id
+                 );
+    $params{resultsformat} = $results_format if $results_format;
+
+    return $self->process_request(
+        \%params,
+        sub {
+            my ($response) = @_;
+
+            return
+              ref($response->{registrationreport}) eq 'HASH'
+              ? $response->{registrationreport}
+              : undef;
+        }
+    );
+}
 
 =head2 getRegistrationList
 

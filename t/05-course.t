@@ -16,11 +16,11 @@ isa_ok($course_list, 'ARRAY', '$ScormCloud->getCourseList');
 
 ##########
 
-can_ok($ScormCloud, 'getMetadata');
+can_ok($ScormCloud, 'courseExists');
 
 is($ScormCloud->courseExists('i do not exist'), 0, '$ScormCloud->courseExists');
 
-can_ok($ScormCloud, 'courseExists');
+can_ok($ScormCloud, 'getMetadata');
 
 SKIP:
 {
