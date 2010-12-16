@@ -3,11 +3,46 @@ use ScormCloud;
 
 use constant CFGFILE => './blib/api-info.cfg';
 
+use constant SERVICE_URL => 'http://cloud.scorm.com/api';
+
+sub createTestConfigInfo
+{
+    my $fh;
+
+    unless (open($fh, '>', CFGFILE))
+    {
+        BAIL_OUT('Cannot open test config file for writing: ' . CFGFILE);
+    }
+
+    diag('Please enter your ScormCloud AppID:');
+    $AppID = <STDIN>;
+    chomp $AppID;
+    print $fh "$AppID\n";
+
+    diag('Please enter your ScormCloud SecretKey:');
+    $SecretKey = <STDIN>;
+    chomp $SecretKey;
+    print $fh "$SecretKey\n";
+
+    diag(  "Please enter your ScormCloud ServiceURL:\n"
+         . "(hit return for default: "
+         . SERVICE_URL
+         . ")");
+    $ServiceURL = <STDIN>;
+    chomp $ServiceURL;
+    $ServiceURL ||= SERVICE_URL;
+    print $fh "$ServiceURL\n";
+
+    close $fh;
+}
+
 sub getTestConfigInfo
 {
     my $fh;
 
-    unless (-f CFGFILE && open($fh, '<', CFGFILE))
+    createTestConfigInfo() unless -f CFGFILE;
+
+    unless (open($fh, '<', CFGFILE))
     {
         BAIL_OUT('Cannot open existing test config file: ' . CFGFILE);
     }
