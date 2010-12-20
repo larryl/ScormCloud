@@ -1,10 +1,10 @@
-package ScormCloud::API;
+package ScormCloud::Service;
 
 use Moose::Role;
 
 =head1 NAME
 
-ScormCloud::API - ScormCloud API base class
+ScormCloud::Service - ScormCloud API base class
 
 =head1 VERSION
 
@@ -231,7 +231,7 @@ automatically be notified of progress on your bug as I make changes.
 
 You can find documentation for this module with the perldoc command.
 
-    perldoc ScormCloud::API
+    perldoc ScormCloud::Service
 
 You can also look for information at:
 

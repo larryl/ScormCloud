@@ -1,12 +1,12 @@
-package ScormCloud::API::Registration;
+package ScormCloud::Service::Registration;
 
 use Moose::Role;
 
-with 'ScormCloud::API';
+with 'ScormCloud::Service';
 
 =head1 NAME
 
-ScormCloud::API::Registration - ScormCloud API "registration" namespace
+ScormCloud::Service::Registration - ScormCloud API "registration" namespace
 
 =head1 VERSION
 
@@ -83,23 +83,61 @@ sub getRegistrationResult
     );
 }
 
-=head2 getRegistrationList
+=head2 getRegistrationList ( [ I<filters> ] )
 
 Returns an arrayref containing a list of registrations.
 The returned list might be empty.
+
+The optional I<filters> hashref can contain any of these entries
+to filter the returned list of registrations:
+
+=over 4
+
+=item filter
+
+A regular expression for matching the registration ID
+
+=item coursefilter
+
+A regular expression for matching the course ID
+
+=back
+
+Note that any filter regular expressions must match the B<entire>
+string.  (There seems to be an implied C<^...$> around the supplied
+pattern.)  So to match e.g. any courses that begin with "ABC":
+
+    {coursefilter => '^ABC'}    # THIS WILL NOT WORK
+
+    {coursefilter => 'ABC.*'}   # This will work
 
 =cut
 
 sub getRegistrationList
 {
-    my ($self) = @_;
+    my ($self, $filters) = @_;
+
+    $filters ||= {};
+
+    my %params = (method => 'registration.getRegistrationList');
+    $params{coursefilter} = $filters->{coursefilter}
+      if $filters->{coursefilter};
+    $params{filter} = $filters->{filter} if $filters->{filter};
 
     return $self->process_request(
-        {method => 'registration.getRegistrationList'},
+        \%params,
         sub {
             my ($response) = @_;
 
-            return $response->{registrationlist};
+            die unless exists $response->{registrationlist};
+            if ($response->{registrationlist})
+            {
+                return $response->{registrationlist};
+            }
+            else
+            {
+                return [];    # empty list
+            }
         },
         {
          xml_parser => {
@@ -135,7 +173,7 @@ automatically be notified of progress on your bug as I make changes.
 
 You can find documentation for this module with the perldoc command.
 
-    perldoc ScormCloud::API::Registration
+    perldoc ScormCloud::Service::Registration
 
 You can also look for information at:
 

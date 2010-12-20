@@ -1,12 +1,12 @@
-package ScormCloud::API::Course;
+package ScormCloud::Service::Reporting;
 
 use Moose::Role;
 
-with 'ScormCloud::API';
+with 'ScormCloud::Service';
 
 =head1 NAME
 
-ScormCloud::API::Course - ScormCloud API "course" namespace
+ScormCloud::Service::Reporting - ScormCloud API "reporting" namespace
 
 =head1 VERSION
 
@@ -25,9 +25,17 @@ our $VERSION = '0.01';
                         secret_key  => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
     );
 
-    print "Found a course\n" if $ScormCloud->courseExists('123');
+    my $account_info = $ScormCloud->getAccountInfo;
 
-    my $course_list = $ScormCloud->getCourseList;
+    print "The contact email for "
+      . $account_info->{company} . " is "
+      . $account_info->{email} . "\n";
+
+    print "There are "
+      . $account_info->{usage}->{totalcourses}
+      . " courses and "
+      . $account_info->{usage}->{totalregistrations}
+      . " registrations available.\n";
 
 =head1 DESCRIPTION
 
@@ -36,92 +44,38 @@ namespace.  See L<ScormCloud> for more info.
 
 =cut
 
-use Carp;
-
 requires 'process_request';
 
 =head1 METHODS
 
-=head2 courseExists ( I<course_id> )
+=head2 getAccountInfo
 
-Given a course ID, returns true if that course exists.
-
-=cut
-
-sub courseExists
-{
-    my ($self, $course_id) = @_;
-
-    croak "Missing course_id" unless $course_id;
-
-    return $self->process_request(
-        {method => 'course.exists', courseid => $course_id},
-        sub {
-            my ($response) = @_;
-
-            return $response->{result} eq 'true' ? 1 : 0;
-        }
-    );
-}
-
-=head2 getMetadata ( I<course_id> )
-
-Given a course ID, returns course metadata.
+Return a hashref containing account info.
+The hash might be empty in case of failure.
 
 =cut
 
-sub getMetadata
-{
-    my ($self, $course_id) = @_;
-
-    croak "Missing course_id" unless $course_id;
-
-    return $self->process_request(
-        {method => 'course.getMetadata', courseid => $course_id},
-        sub {
-            my ($response) = @_;
-
-            return ref($response->{package}) eq 'HASH'
-              ? $response->{package}
-              : undef;
-        }
-    );
-}
-
-=head2 getCourseList
-
-Returns an arrayref containing a list of courses.
-The returned list might be empty.
-
-=cut
-
-sub getCourseList
+sub getAccountInfo
 {
     my ($self) = @_;
 
     return $self->process_request(
-        {method => 'course.getCourseList'},
+        {method => 'reporting.getAccountInfo'},
         sub {
             my ($response) = @_;
 
-            return $response->{courselist};
-        },
-        {
-         xml_parser => {
-                        ForceArray => ['course'],
-                        GroupTags  => {'courselist' => 'course'},
-                       }
+            return $response->{account};
         }
     );
 }
 
 1;
 
-__END__
-
 =head1 SEE ALSO
 
 L<ScormCloud>
+
+__END__
 
 =head1 AUTHOR
 
@@ -137,7 +91,7 @@ automatically be notified of progress on your bug as I make changes.
 
 You can find documentation for this module with the perldoc command.
 
-    perldoc ScormCloud::API::Course
+    perldoc ScormCloud::Service::Reporting
 
 You can also look for information at:
 

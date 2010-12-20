@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Test::More tests => 8;
+use Test::More tests => 9;
 
 sub not_in_file_ok
 {
@@ -53,8 +53,9 @@ not_in_file_ok(Changes => "placeholder date/time" => qr(Date/time));
 
 module_boilerplate_ok('lib/ScormCloud.pm');
 module_boilerplate_ok('lib/ScormCloud/Types.pm');
-module_boilerplate_ok('lib/ScormCloud/API/Course.pm');
-module_boilerplate_ok('lib/ScormCloud/API/Debug.pm');
-module_boilerplate_ok('lib/ScormCloud/API/Registration.pm');
-module_boilerplate_ok('lib/ScormCloud/API/Reporting.pm');
+module_boilerplate_ok('lib/ScormCloud/Service.pm');
+module_boilerplate_ok('lib/ScormCloud/Service/Course.pm');
+module_boilerplate_ok('lib/ScormCloud/Service/Debug.pm');
+module_boilerplate_ok('lib/ScormCloud/Service/Registration.pm');
+module_boilerplate_ok('lib/ScormCloud/Service/Reporting.pm');
 

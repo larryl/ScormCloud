@@ -44,21 +44,21 @@ use ScormCloud::Types;
 
 Each portion of the API is defined in its own class:
 
-L<ScormCloud::API::Course>
+L<ScormCloud::Service::Course>
 
-L<ScormCloud::API::Debug>
+L<ScormCloud::Service::Debug>
 
-L<ScormCloud::API::Registration>
+L<ScormCloud::Service::Registration>
 
-L<ScormCloud::API::Reporting>
+L<ScormCloud::Service::Reporting>
 
 =cut
 
 with
-  'ScormCloud::API::Course',
-  'ScormCloud::API::Debug',
-  'ScormCloud::API::Registration',
-  'ScormCloud::API::Reporting',
+  'ScormCloud::Service::Course',
+  'ScormCloud::Service::Debug',
+  'ScormCloud::Service::Registration',
+  'ScormCloud::Service::Reporting',
   ;
 
 =head1 USAGE
@@ -224,13 +224,13 @@ __END__
 
 L<http://www.scorm.com/>
 
-L<ScormCloud::API::Course>
+L<ScormCloud::Service::Course>
 
-L<ScormCloud::API::Debug>
+L<ScormCloud::Service::Debug>
 
-L<ScormCloud::API::Registration>
+L<ScormCloud::Service::Registration>
 
-L<ScormCloud::API::Reporting>
+L<ScormCloud::Service::Reporting>
 
 =head1 AUTHOR
 

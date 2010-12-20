@@ -1,12 +1,12 @@
-package ScormCloud::API::Reporting;
+package ScormCloud::Service::Debug;
 
 use Moose::Role;
 
-with 'ScormCloud::API';
+with 'ScormCloud::Service';
 
 =head1 NAME
 
-ScormCloud::API::Reporting - ScormCloud API "reporting" namespace
+ScormCloud::Service::Debug - ScormCloud API "debug" namespace
 
 =head1 VERSION
 
@@ -25,21 +25,13 @@ our $VERSION = '0.01';
                         secret_key  => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
     );
 
-    my $account_info = $ScormCloud->getAccountInfo;
+    print "Service is alive\n" if $ScormCloud->ping;
 
-    print "The contact email for "
-      . $account_info->{company} . " is "
-      . $account_info->{email} . "\n";
-
-    print "There are "
-      . $account_info->{usage}->{totalcourses}
-      . " courses and "
-      . $account_info->{usage}->{totalregistrations}
-      . " registrations available.\n";
+    print "Auth is valid\n"    if $ScormCloud->authPing;
 
 =head1 DESCRIPTION
 
-This module defines L<ScormCloud> API methods in the "course"
+This module defines L<ScormCloud> API methods in the "debug"
 namespace.  See L<ScormCloud> for more info.
 
 =cut
@@ -48,34 +40,75 @@ requires 'process_request';
 
 =head1 METHODS
 
-=head2 getAccountInfo
+=head2 ping
 
-Return a hashref containing account info.
-The hash might be empty in case of failure.
+Returns true if the API service is reachable.
 
 =cut
 
-sub getAccountInfo
+sub ping
 {
     my ($self) = @_;
 
     return $self->process_request(
-        {method => 'reporting.getAccountInfo'},
+        {method => 'debug.ping'},
         sub {
             my ($response) = @_;
 
-            return $response->{account};
+            exists $response->{pong} ? 1 : 0;
+        }
+    );
+}
+
+=head2 authPing
+
+Returns true if the API service is reachable, and both the
+application ID and secret key are valid.
+
+=cut
+
+sub authPing
+{
+    my ($self) = @_;
+
+    return $self->process_request(
+        {method => 'debug.authPing'},
+        sub {
+            my ($response) = @_;
+
+            exists $response->{pong} ? 1 : 0;
+        }
+    );
+}
+
+=head2 getTime
+
+Returns the current time at the API service host.  The time is in
+UTC and is formatted as "YYYYMMDDhhmmss".
+
+=cut
+
+sub getTime
+{
+    my ($self) = @_;
+
+    return $self->process_request(
+        {method => 'debug.getTime'},
+        sub {
+            my ($response) = @_;
+
+            return $response->{currenttime}->{content};
         }
     );
 }
 
 1;
 
+__END__
+
 =head1 SEE ALSO
 
 L<ScormCloud>
-
-__END__
 
 =head1 AUTHOR
 
@@ -91,7 +124,7 @@ automatically be notified of progress on your bug as I make changes.
 
 You can find documentation for this module with the perldoc command.
 
-    perldoc ScormCloud::API::Reporting
+    perldoc ScormCloud::Service::Debug
 
 You can also look for information at:
 

@@ -1,6 +1,6 @@
 #!perl -T
 
-use Test::More tests => 11;
+use Test::More tests => 13;
 
 require './t/_test_util.pl';
 
@@ -10,7 +10,13 @@ my $ScormCloud = getScormCloudObject();
 
 can_ok($ScormCloud, 'getCourseList');
 
-my $course_list = $ScormCloud->getCourseList;
+my $course_list;
+
+$course_list = $ScormCloud->getCourseList({filter => 'i do not exist'});
+isa_ok($course_list, 'ARRAY', '$ScormCloud->getCourseList');
+is(scalar(@{$course_list}), 0, '$ScormCloud->getCourseList empty');
+
+$course_list = $ScormCloud->getCourseList;
 
 isa_ok($course_list, 'ARRAY', '$ScormCloud->getCourseList');
 
