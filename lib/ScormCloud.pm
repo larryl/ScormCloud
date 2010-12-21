@@ -52,6 +52,8 @@ L<ScormCloud::Service::Registration>
 
 L<ScormCloud::Service::Reporting>
 
+L<ScormCloud::Service::Upload>
+
 =cut
 
 with
@@ -59,6 +61,7 @@ with
   'ScormCloud::Service::Debug',
   'ScormCloud::Service::Registration',
   'ScormCloud::Service::Reporting',
+  'ScormCloud::Service::Upload',
   ;
 
 =head1 USAGE
@@ -231,6 +234,8 @@ L<ScormCloud::Service::Debug>
 L<ScormCloud::Service::Registration>
 
 L<ScormCloud::Service::Reporting>
+
+L<ScormCloud::Service::Upload>
 
 =head1 AUTHOR
 

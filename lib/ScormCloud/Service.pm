@@ -37,7 +37,7 @@ See L<ScormCloud> for more info.
 use Carp;
 use Data::Dump 'dump';
 use Digest::MD5 qw(md5_hex);
-use HTTP::Request;
+use HTTP::Request::Common;
 use POSIX qw(strftime);
 use Try::Tiny;
 use XML::Simple;
@@ -60,9 +60,11 @@ sub request
 {
     my ($self, $params, $args) = @_;
 
-    $params             ||= {};
-    $args               ||= {};
-    $args->{xml_parser} ||= {};
+    $params                  ||= {};
+    $args                    ||= {};
+    $args->{request_method}  ||= 'GET';
+    $args->{request_headers} ||= {};
+    $args->{xml_parser}      ||= {};
 
     croak 'No method' unless $params->{method};
 
@@ -84,7 +86,18 @@ sub request
 
     $self->_dump_data($uri . '') if $self->dump_request_url;
 
-    my $request = HTTP::Request->new(GET => $uri);
+    my %request_args = %{$args->{request_headers}};
+    if ($args->{request_content})
+    {
+        $request_args{Content_Type} = 'form-data';
+        $request_args{Content}      = $args->{request_content};
+    }
+
+    my $request;
+    {
+        no strict 'refs';
+        $request = $args->{request_method}->($uri, %request_args);
+    }
 
     my $response = $self->lwp_user_agent->request($request);
 

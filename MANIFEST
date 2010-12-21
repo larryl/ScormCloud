@@ -6,6 +6,7 @@ lib/ScormCloud/Service/Course.pm
 lib/ScormCloud/Service/Debug.pm
 lib/ScormCloud/Service/Registration.pm
 lib/ScormCloud/Service/Reporting.pm
+lib/ScormCloud/Service/Upload.pm
 lib/ScormCloud/Types.pm
 Makefile.PL
 MANIFEST
