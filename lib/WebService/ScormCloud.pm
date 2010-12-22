@@ -1,10 +1,10 @@
-package ScormCloud;
+package WebService::ScormCloud;
 
 use Moose;
 
 =head1 NAME
 
-ScormCloud - Interface to cloud.scorm.com
+WebService::ScormCloud - Interface to cloud.scorm.com
 
 =head1 DESCRIPTION
 
@@ -29,46 +29,46 @@ our $VERSION = '0.01';
 
 =head1 SYNOPSIS
 
-    use ScormCloud;
+    use WebService::ScormCloud;
 
-    my $ScormCloud = ScormCloud->new(
-                        app_id      => '12345678',
-                        secret_key  => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+    my $ScormCloud = WebService::ScormCloud->new(
+                         app_id      => '12345678',
+                         secret_key  => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
     );
 
 =cut
 
-use ScormCloud::Types;
+use WebService::ScormCloud::Types;
 
 =head1 API CLASSES
 
 Each portion of the API is defined in its own class:
 
-L<ScormCloud::Service::Course>
+L<WebService::ScormCloud::Service::Course>
 
-L<ScormCloud::Service::Debug>
+L<WebService::ScormCloud::Service::Debug>
 
-L<ScormCloud::Service::Registration>
+L<WebService::ScormCloud::Service::Registration>
 
-L<ScormCloud::Service::Reporting>
+L<WebService::ScormCloud::Service::Reporting>
 
-L<ScormCloud::Service::Upload>
+L<WebService::ScormCloud::Service::Upload>
 
 =cut
 
 with
-  'ScormCloud::Service::Course',
-  'ScormCloud::Service::Debug',
-  'ScormCloud::Service::Registration',
-  'ScormCloud::Service::Reporting',
-  'ScormCloud::Service::Upload',
+  'WebService::ScormCloud::Service::Course',
+  'WebService::ScormCloud::Service::Debug',
+  'WebService::ScormCloud::Service::Registration',
+  'WebService::ScormCloud::Service::Reporting',
+  'WebService::ScormCloud::Service::Upload',
   ;
 
 =head1 USAGE
 
 =head2 new( I<%args> )
 
-Construct a C<ScormCloud> object to communicate with the API.
+Construct a C<WebService::ScormCloud> object to communicate with the API.
 
 B<Note:> Any of the following constructor parameters can also be
 called post-construction as object set/get methods.
@@ -111,7 +111,7 @@ The API service URL.  Defaults to "http://cloud.scorm.com/api".
 has 'service_url' => (
                       is       => 'rw',
                       required => 1,
-                      isa      => 'ScormCloud::Types::URI',
+                      isa      => 'WebService::ScormCloud::Types::URI',
                       coerce   => 1,
                       default  => 'http://cloud.scorm.com/api',
                      );
@@ -125,7 +125,7 @@ Set the user agent string used in API requests.  Defaults to "MyApp/1.0".
 has 'lwp_user_agent' => (
                          is       => 'rw',
                          required => 1,
-                         isa      => 'ScormCloud::Types::LWP::UserAgent',
+                         isa      => 'WebService::ScormCloud::Types::LWP::UserAgent',
                          coerce   => 1,
                          default  => 'MyApp/1.0',
                         );
@@ -227,15 +227,15 @@ __END__
 
 L<http://www.scorm.com/>
 
-L<ScormCloud::Service::Course>
+L<WebService::ScormCloud::Service::Course>
 
-L<ScormCloud::Service::Debug>
+L<WebService::ScormCloud::Service::Debug>
 
-L<ScormCloud::Service::Registration>
+L<WebService::ScormCloud::Service::Registration>
 
-L<ScormCloud::Service::Reporting>
+L<WebService::ScormCloud::Service::Reporting>
 
-L<ScormCloud::Service::Upload>
+L<WebService::ScormCloud::Service::Upload>
 
 =head1 AUTHOR
 
@@ -243,15 +243,17 @@ Larry Leszczynski, C<< <larryl at cpan.org> >>
 
 =head1 BUGS
 
-Please report any bugs or feature requests to C<bug-scormcloud at rt.cpan.org>, or through
-the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=ScormCloud>.  I will be notified, and then you'll
-automatically be notified of progress on your bug as I make changes.
+Please report any bugs or feature requests to
+C<bug-scormcloud at rt.cpan.org>, or through the web interface at
+L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=WebService-ScormCloud>.
+I will be notified, and then you'll automatically be notified of
+progress on your bug as I make changes.
 
 =head1 SUPPORT
 
 You can find documentation for this module with the perldoc command.
 
-    perldoc ScormCloud
+    perldoc WebService::ScormCloud
 
 You can also look for information at:
 
@@ -259,19 +261,19 @@ You can also look for information at:
 
 =item * RT: CPAN's request tracker
 
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=ScormCloud>
+L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=WebService-ScormCloud>
 
 =item * AnnoCPAN: Annotated CPAN documentation
 
-L<http://annocpan.org/dist/ScormCloud>
+L<http://annocpan.org/dist/WebService-ScormCloud>
 
 =item * CPAN Ratings
 
-L<http://cpanratings.perl.org/d/ScormCloud>
+L<http://cpanratings.perl.org/d/WebService-ScormCloud>
 
 =item * Search CPAN
 
-L<http://search.cpan.org/dist/ScormCloud/>
+L<http://search.cpan.org/dist/WebService-ScormCloud/>
 
 =back
 

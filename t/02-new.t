@@ -10,7 +10,7 @@ require './t/_test_util.pl';
 my ($AppID, $SecretKey, $ServiceURL) = getTestConfigInfo();
 
 my $ScormCloud = new_ok(
-                        'ScormCloud' => [
+                        'WebService::ScormCloud' => [
                                          app_id     => $AppID,
                                          secret_key => $SecretKey,
                                         ]
@@ -29,7 +29,7 @@ is($ScormCloud->lwp_user_agent->agent,
     'MyApp/1.0', '$ScormCloud->lwp_user_agent');
 
 $ScormCloud = new_ok(
-                     'ScormCloud' => [
+                     'WebService::ScormCloud' => [
                                       app_id         => $AppID,
                                       secret_key     => $SecretKey,
                                       service_url    => $ServiceURL,

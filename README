@@ -1,4 +1,4 @@
-ScormCloud
+WebService::ScormCloud
 
 This module provides an API interface to cloud.scorm.com, which is a
 web service provided by Rustici Software (http://www.scorm.com/).
@@ -27,21 +27,21 @@ SUPPORT AND DOCUMENTATION
 After installing, you can find documentation for this module with the
 perldoc command.
 
-    perldoc ScormCloud
+    perldoc WebService::ScormCloud
 
 You can also look for information at:
 
     RT, CPAN's request tracker
-        http://rt.cpan.org/NoAuth/Bugs.html?Dist=ScormCloud
+        http://rt.cpan.org/NoAuth/Bugs.html?Dist=WebService-ScormCloud
 
     AnnoCPAN, Annotated CPAN documentation
-        http://annocpan.org/dist/ScormCloud
+        http://annocpan.org/dist/WebService-ScormCloud
 
     CPAN Ratings
-        http://cpanratings.perl.org/d/ScormCloud
+        http://cpanratings.perl.org/d/WebService-ScormCloud
 
     Search CPAN
-        http://search.cpan.org/dist/ScormCloud/
+        http://search.cpan.org/dist/WebService-ScormCloud/
 
 
 COPYRIGHT AND LICENCE

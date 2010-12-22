@@ -3,10 +3,10 @@ use warnings;
 use ExtUtils::MakeMaker;
 
 WriteMakefile(
-    NAME          => 'ScormCloud',
+    NAME          => 'WebService::ScormCloud',
     AUTHOR        => q{Larry Leszczynski <larryl@cpan.org>},
-    VERSION_FROM  => 'lib/ScormCloud.pm',
-    ABSTRACT_FROM => 'lib/ScormCloud.pm',
+    VERSION_FROM  => 'lib/WebService/ScormCloud.pm',
+    ABSTRACT_FROM => 'lib/WebService/ScormCloud.pm',
     ($ExtUtils::MakeMaker::VERSION >= 6.3002 ? ('LICENSE' => 'perl') : ()),
     PL_FILES  => {},
     PREREQ_PM => {

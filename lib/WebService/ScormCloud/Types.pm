@@ -1,10 +1,10 @@
-package ScormCloud::Types;
+package WebService::ScormCloud::Types;
 
 use Moose::Util::TypeConstraints;
 
 =head1 NAME
 
-ScormCloud::Types - type definitions for L<ScormCloud>
+WebService::ScormCloud::Types - type definitions for L<WebService::ScormCloud>
 
 =head1 VERSION
 
@@ -16,7 +16,7 @@ our $VERSION = '0.01';
 
 =head1 SYNOPSIS
 
-    use ScormCloud::Types;
+    use WebService::ScormCloud::Types;
 
 =cut
 
@@ -25,32 +25,32 @@ use URI;
 
 =head2 TYPES
 
-=head1 ScormCloud::Types::LWP::UserAgent
+=head1 WebService::ScormCloud::Types::LWP::UserAgent
 
 Subtype of L<LWP::UserAgent>.  Can be coerced from a string which
 defines the C<$ua->agent>.
 
 =cut
 
-subtype 'ScormCloud::Types::LWP::UserAgent' => as 'LWP::UserAgent';
+subtype 'WebService::ScormCloud::Types::LWP::UserAgent' => as 'LWP::UserAgent';
 
-coerce 'ScormCloud::Types::LWP::UserAgent' => from 'Str' => via
+coerce 'WebService::ScormCloud::Types::LWP::UserAgent' => from 'Str' => via
 {
     my $ua = LWP::UserAgent->new;
     $ua->agent($_);
     $ua;
 };
 
-=head1 ScormCloud::Types::URI
+=head1 WebService::ScormCloud::Types::URI
 
 Subtype of L<URI>.  Can be coerced from a string representing the
 URL.
 
 =cut
 
-subtype 'ScormCloud::Types::URI' => as 'URI';
+subtype 'WebService::ScormCloud::Types::URI' => as 'URI';
 
-coerce 'ScormCloud::Types::URI' => from 'Str' => via
+coerce 'WebService::ScormCloud::Types::URI' => from 'Str' => via
 {
     URI->new($_);
 };
@@ -66,14 +66,14 @@ Larry Leszczynski, C<< <larryl at cpan.org> >>
 =head1 BUGS
 
 Please report any bugs or feature requests to C<bug-scormcloud at rt.cpan.org>, or through
-the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=ScormCloud>.  I will be notified, and then you'll
+the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=WebService-ScormCloud>.  I will be notified, and then you'll
 automatically be notified of progress on your bug as I make changes.
 
 =head1 SUPPORT
 
 You can find documentation for this module with the perldoc command.
 
-    perldoc ScormCloud::Types
+    perldoc WebService::ScormCloud::Types
 
 You can also look for information at:
 
@@ -81,19 +81,19 @@ You can also look for information at:
 
 =item * RT: CPAN's request tracker
 
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=ScormCloud>
+L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=WebService-ScormCloud>
 
 =item * AnnoCPAN: Annotated CPAN documentation
 
-L<http://annocpan.org/dist/ScormCloud>
+L<http://annocpan.org/dist/WebService-ScormCloud>
 
 =item * CPAN Ratings
 
-L<http://cpanratings.perl.org/d/ScormCloud>
+L<http://cpanratings.perl.org/d/WebService-ScormCloud>
 
 =item * Search CPAN
 
-L<http://search.cpan.org/dist/ScormCloud/>
+L<http://search.cpan.org/dist/WebService-ScormCloud/>
 
 =back
 

@@ -1,12 +1,12 @@
-package ScormCloud::Service::Reporting;
+package WebService::ScormCloud::Service::Reporting;
 
 use Moose::Role;
 
-with 'ScormCloud::Service';
+with 'WebService::ScormCloud::Service';
 
 =head1 NAME
 
-ScormCloud::Service::Reporting - ScormCloud API "reporting" namespace
+WebService::ScormCloud::Service::Reporting - ScormCloud API "reporting" namespace
 
 =head1 VERSION
 
@@ -18,9 +18,9 @@ our $VERSION = '0.01';
 
 =head1 SYNOPSIS
 
-    use ScormCloud;
+    use WebService::ScormCloud;
 
-    my $ScormCloud = ScormCloud->new(
+    my $ScormCloud = WebService::ScormCloud->new(
                         app_id      => '12345678',
                         secret_key  => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
     );
@@ -39,8 +39,8 @@ our $VERSION = '0.01';
 
 =head1 DESCRIPTION
 
-This module defines L<ScormCloud> API methods in the "course"
-namespace.  See L<ScormCloud> for more info.
+This module defines L<WebService::ScormCloud> API methods in the "course"
+namespace.  See L<WebService::ScormCloud> for more info.
 
 =cut
 
@@ -73,7 +73,7 @@ sub getAccountInfo
 
 =head1 SEE ALSO
 
-L<ScormCloud>
+L<WebService::ScormCloud>
 
 __END__
 
@@ -84,14 +84,14 @@ Larry Leszczynski, C<< <larryl at cpan.org> >>
 =head1 BUGS
 
 Please report any bugs or feature requests to C<bug-scormcloud at rt.cpan.org>, or through
-the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=ScormCloud>.  I will be notified, and then you'll
+the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=WebService-ScormCloud>.  I will be notified, and then you'll
 automatically be notified of progress on your bug as I make changes.
 
 =head1 SUPPORT
 
 You can find documentation for this module with the perldoc command.
 
-    perldoc ScormCloud::Service::Reporting
+    perldoc WebService::ScormCloud::Service::Reporting
 
 You can also look for information at:
 
@@ -99,19 +99,19 @@ You can also look for information at:
 
 =item * RT: CPAN's request tracker
 
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=ScormCloud>
+L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=WebService-ScormCloud>
 
 =item * AnnoCPAN: Annotated CPAN documentation
 
-L<http://annocpan.org/dist/ScormCloud>
+L<http://annocpan.org/dist/WebService-ScormCloud>
 
 =item * CPAN Ratings
 
-L<http://cpanratings.perl.org/d/ScormCloud>
+L<http://cpanratings.perl.org/d/WebService-ScormCloud>
 
 =item * Search CPAN
 
-L<http://search.cpan.org/dist/ScormCloud/>
+L<http://search.cpan.org/dist/WebService-ScormCloud/>
 
 =back
 
