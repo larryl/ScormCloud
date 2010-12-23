@@ -120,9 +120,11 @@ sub getRegistrationList
     $filters ||= {};
 
     my %params = (method => 'registration.getRegistrationList');
-    $params{coursefilter} = $filters->{coursefilter}
-      if $filters->{coursefilter};
-    $params{filter} = $filters->{filter} if $filters->{filter};
+
+    foreach my $key qw(filter coursefilter)
+    {
+        $params{$key} = $filters->{$key} if $filters->{$key};
+    }
 
     return $self->process_request(
         \%params,

@@ -28,19 +28,37 @@ my %expected = (
 
 foreach my $key (sort keys %expected)
 {
-    ok(exists $account_info->{$key},
-        "\$ScormCloud->getAccountInfo includes $key");
-    is(ref($account_info->{$key}),
-        $expected{$key}, "ref(\$ScormCloud->getAccountInfo->{$key})");
+    my $msg1 = "\$ScormCloud->getAccountInfo includes $key";
+    my $msg2 = "ref(\$ScormCloud->getAccountInfo->{$key})";
+
+    if (exists $account_info->{$key})
+    {
+        pass($msg1);
+        is(ref($account_info->{$key}), $expected{$key}, $msg2);
+    }
+    else
+    {
+        fail($msg1);
+        fail($msg2);
+    }
 }
 
 my $usage = $account_info->{usage};
 
 foreach my $key qw(totalcourses totalregistrations)
 {
-    ok(exists $usage->{$key},
-        "\$ScormCloud->getAccountInfo->{usage} includes $key");
-    like($usage->{$key}, qr/^\d+$/,
-         "\$ScormCloud->getAccountInfo->{usage}->{$key} is numeric");
+    my $msg1 = "\$ScormCloud->getAccountInfo->{usage} includes $key";
+    my $msg2 = "\$ScormCloud->getAccountInfo->{usage}->{$key} is numeric";
+
+    if (exists $usage->{$key})
+    {
+        pass($msg1);
+        like($usage->{$key}, qr/^\d+$/, $msg2);
+    }
+    else
+    {
+        fail($msg1);
+        fail($msg2);
+    }
 }
 

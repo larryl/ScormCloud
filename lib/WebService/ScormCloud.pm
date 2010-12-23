@@ -125,9 +125,9 @@ Set the user agent string used in API requests.  Defaults to "MyApp/1.0".
 has 'lwp_user_agent' => (
                          is       => 'rw',
                          required => 1,
-                         isa      => 'WebService::ScormCloud::Types::LWP::UserAgent',
-                         coerce   => 1,
-                         default  => 'MyApp/1.0',
+                         isa => 'WebService::ScormCloud::Types::LWP::UserAgent',
+                         coerce  => 1,
+                         default => 'MyApp/1.0',
                         );
 
 =item top_level_namespace

@@ -48,11 +48,19 @@ SKIP:
 
     foreach my $key (sort keys %expected)
     {
-        ok(exists $result->{$key},
-            "\$ScormCloud->getRegistrationResult includes $key");
-        is(ref($result->{$key}),
-            $expected{$key},
-            "ref(\$ScormCloud->getRegistrationResult->{$key})");
+        my $msg1 = "\$ScormCloud->getRegistrationResult includes $key";
+        my $msg2 = "ref(\$ScormCloud->getRegistrationResult->{$key})";
+
+        if (exists $result->{$key})
+        {
+            pass($msg1);
+            is(ref($result->{$key}), $expected{$key}, $msg2);
+        }
+        else
+        {
+            fail($msg1);
+            fail($msg2);
+        }
     }
 
     $result = $ScormCloud->getRegistrationResult($registration_id, 'full');
@@ -66,10 +74,18 @@ SKIP:
 
     foreach my $key (sort keys %expected)
     {
-        ok(exists $result->{$key},
-            "\$ScormCloud->getRegistrationResult includes $key");
-        is(ref($result->{$key}),
-            $expected{$key},
-            "ref(\$ScormCloud->getRegistrationResult->{$key})");
+        my $msg1 = "\$ScormCloud->getRegistrationResult includes $key";
+        my $msg2 = "ref(\$ScormCloud->getRegistrationResult->{$key})";
+
+        if (exists $result->{$key})
+        {
+            pass($msg1);
+            is(ref($result->{$key}), $expected{$key}, $msg2);
+        }
+        else
+        {
+            fail($msg1);
+            fail($msg2);
+        }
     }
 }

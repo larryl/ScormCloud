@@ -11,9 +11,9 @@ my ($AppID, $SecretKey, $ServiceURL) = getTestConfigInfo();
 
 my $ScormCloud = new_ok(
                         'WebService::ScormCloud' => [
-                                         app_id     => $AppID,
-                                         secret_key => $SecretKey,
-                                        ]
+                                                     app_id     => $AppID,
+                                                     secret_key => $SecretKey,
+                                                    ]
                        );
 
 can_ok($ScormCloud, 'app_id');
@@ -30,11 +30,11 @@ is($ScormCloud->lwp_user_agent->agent,
 
 $ScormCloud = new_ok(
                      'WebService::ScormCloud' => [
-                                      app_id         => $AppID,
-                                      secret_key     => $SecretKey,
-                                      service_url    => $ServiceURL,
-                                      lwp_user_agent => 'TestScormCloud/1.0',
-                                     ]
+                                         app_id         => $AppID,
+                                         secret_key     => $SecretKey,
+                                         service_url    => $ServiceURL,
+                                         lwp_user_agent => 'TestScormCloud/1.0',
+                     ]
                     );
 
 is($ScormCloud->service_url, $ServiceURL,

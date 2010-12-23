@@ -16,4 +16,6 @@ BEGIN
     use_ok('WebService::ScormCloud::Service::Reporting');
 }
 
-diag("Testing WebService::ScormCloud $WebService::ScormCloud::VERSION, Perl $], $^X");
+diag(
+    "Testing WebService::ScormCloud $WebService::ScormCloud::VERSION, Perl $], $^X"
+);

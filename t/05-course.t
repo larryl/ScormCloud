@@ -49,9 +49,19 @@ SKIP:
 
     foreach my $key (sort keys %expected)
     {
-        ok(exists $metadata->{$key}, "\$ScormCloud->getMetadata includes $key");
-        is(ref($metadata->{$key}),
-            $expected{$key}, "ref(\$ScormCloud->getMetadata->{$key})");
+        my $msg1 = "\$ScormCloud->getMetadata includes $key";
+        my $msg2 = "ref(\$ScormCloud->getMetadata->{$key})";
+
+        if (exists $metadata->{$key})
+        {
+            pass($msg1);
+            is(ref($metadata->{$key}), $expected{$key}, $msg2);
+        }
+        else
+        {
+            fail($msg1);
+            fail($msg2);
+        }
     }
 }
 

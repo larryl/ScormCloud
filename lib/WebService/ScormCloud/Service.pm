@@ -117,8 +117,6 @@ sub request
                                       %{$args->{xml_parser}}
                                      );
 
-            $self->_dump_data($response_data) if $self->dump_response_data;
-
             # Response data should always include "stat".  Make sure it
             # exists, so callers can safely assume it is always there:
             #
@@ -158,6 +156,8 @@ sub request
                           err  => {code => 9999, msg => $msg},
                          };
     }
+
+    $self->_dump_data($response_data) if $self->dump_response_data;
 
     return $response_data;
 }
@@ -206,11 +206,13 @@ sub process_request
 
     my $data = undef;
 
-    try
+    if ($response->{stat} eq 'ok')
     {
-        die unless $response->{stat} eq 'ok';
-        $data = $callback->($response);
-    };
+        try
+        {
+            $data = $callback->($response);
+        };
+    }
 
     unless (defined $data)
     {
