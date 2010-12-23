@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 23;
+use Test::More tests => 24;
 use Test::Exception;
 
 require './t/_test_util.pl';
@@ -28,7 +28,7 @@ throws_ok { $progress = $ScormCloud->getUploadProgress() } qr/^Missing token/,
 
 $progress = $ScormCloud->getUploadProgress($token);
 isa_ok($progress, 'HASH', '$ScormCloud->getUploadProgress');
-is(keys %{$progress}, 0, '$ScormCloud->getUploadProgress is empty');
+is(scalar(keys %{$progress}), 0, '$ScormCloud->getUploadProgress is empty');
 
 unless (-f $SAMPLE_UPLOAD_FILE_PATH)
 {
@@ -45,8 +45,17 @@ can_ok($ScormCloud, 'uploadFile');
 
 my $remote_name;
 
-throws_ok { $remote_name = $ScormCloud->uploadFile() } qr/^Missing file/,
-  '$ScormCloud->uploadFile caught missing file';
+throws_ok
+{
+    $remote_name = $ScormCloud->uploadFile();
+}
+qr/^Missing file/, '$ScormCloud->uploadFile caught missing file';
+
+throws_ok
+{
+    $remote_name = $ScormCloud->uploadFile($SAMPLE_UPLOAD_FILE_PATH, 'foobar');
+}
+qr/^Invalid API response data/, '$ScormCloud->uploadFile caught bogus token';
 
 $remote_name = $ScormCloud->uploadFile($SAMPLE_UPLOAD_FILE_PATH, $token);
 like($remote_name, qr/$SAMPLE_UPLOAD_FILE$/,

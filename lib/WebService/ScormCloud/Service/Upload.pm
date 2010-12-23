@@ -27,7 +27,9 @@ our $VERSION = '0.01';
 
     my $token = $ScormCloud->getUploadToken;
 
-    my ($errcode, $msg) = $ScormCloud->uploadFile($token, $file);
+    my $remote_filename = $ScormCloud->uploadFile($file, $token);
+
+    my $progress = $ScormCloud->getUploadProgress($token);
 
     my $uploaded_files = $ScormCloud->listFiles;
 
@@ -151,7 +153,7 @@ sub listFiles
 Delete a file that was uploaded.
 
 Note: This method only handles one file at a time even though the
-API servie can accept multiple files for deletion in a single
+API service can accept multiple files for deletion in a single
 request.
 
 =cut

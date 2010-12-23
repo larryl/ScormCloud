@@ -12,12 +12,12 @@ Makefile.PL
 MANIFEST
 README
 t/00-load.t
-t/02-new.t
-t/03-debug.t
-t/04-reporting.t
+t/01-new.t
+t/02-debug.t
+t/03-reporting.t
+t/04-upload.t
 t/05-course.t
 t/06-registration.t
 t/_test_util.pl
-t/boilerplate.t
 t/pod-coverage.t
 t/pod.t

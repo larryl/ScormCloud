@@ -29,6 +29,8 @@ our $VERSION = '0.01';
 
     print "Auth is valid\n"    if $ScormCloud->authPing;
 
+    print "Service says the UTC time is ", $ScormCloud->getTime, "\n";
+
 =head1 DESCRIPTION
 
 This module defines L<WebService::ScormCloud> API methods in the "debug"
