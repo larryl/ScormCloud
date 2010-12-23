@@ -113,11 +113,8 @@ sub uploadFile
 
             return $response->{location};
         },
-        {
-         request_method  => 'POST',
-         request_content => [file => [$file]],
-        }
-    );
+        {request_content => [file => [$file]]}
+                                 );
 }
 
 =head2 listFiles

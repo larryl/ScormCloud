@@ -87,8 +87,15 @@ sub request
     $self->_dump_data($uri . '') if $self->dump_request_url;
 
     my %request_args = %{$args->{request_headers}};
+
+    # If set, "request_content" should be a listref.  E.g. for a
+    # file upload:
+    #
+    #     $args->{request_content} = [file => ['/path/to/file']];
+    #
     if ($args->{request_content})
     {
+        $args->{request_method}     = 'POST';
         $request_args{Content_Type} = 'form-data';
         $request_args{Content}      = $args->{request_content};
     }
@@ -109,52 +116,59 @@ sub request
         {
             $self->_dump_data($response->content) if $self->dump_response_xml;
 
+            # Add some extra handling in case we get an error response:
+            #
+            my $ForceArray = delete $args->{xml_parser}->{ForceArray} || [];
+            my $GroupTags  = delete $args->{xml_parser}->{GroupTags}  || {};
+            push @{$ForceArray}, 'err', 'tracetext';
+            $GroupTags->{stacktrace} = 'tracetext';
+
             $response_data =
               XML::Simple->new->XMLin(
                                       $response->content,
                                       KeyAttr       => [],
                                       SuppressEmpty => '',
+                                      ForceArray    => $ForceArray,
+                                      GroupTags     => $GroupTags,
                                       %{$args->{xml_parser}}
-                                     );
+                                     ) || {};
 
             # Response data should always include "stat".  Make sure it
             # exists, so callers can safely assume it is always there:
             #
             $response_data->{stat} ||= 'fail';
-
-            # If response status is "fail", make sure "err" always
-            # exists:
-            #
-            if ($response_data->{stat} eq 'fail')
-            {
-                $response_data->{err} ||= {
-                                           code => 9999,
-                                           msg  => 'FAIL STATUS BUT NO ERR',
-                                          };
-            }
         }
         catch
         {
-            my $msg = 'XML PARSE FAILURE: ' . $_;
-
-            croak $msg if $self->die_on_bad_response;
-
             $response_data = {
                               stat => 'fail',
-                              err  => {code => 9999, msg => $msg},
+                              err  => [
+                                      {
+                                       code => 999,
+                                       msg  => 'XML PARSE FAILURE: ' . $_
+                                      }
+                                     ]
                              };
         };
     }
     else
     {
-        my $msg = 'BAD HTTP RESPONSE: ' . $response->status_line;
-
-        croak $msg if $self->die_on_bad_response;
-
         $response_data = {
-                          stat => 'fail',
-                          err  => {code => 9999, msg => $msg},
-                         };
+                      stat => 'fail',
+                      err  => [
+                          {
+                           code => 999,
+                           msg => 'BAD HTTP RESPONSE: ' . $response->status_line
+                          }
+                      ]
+        };
+    }
+
+    if ($response_data->{stat} eq 'fail')
+    {
+        $response_data->{err} ||= [{code => 999, msg => 'FAIL BUT NO ERR'}];
+        confess "Invalid API response data:\n" . dump($response_data) . "\n"
+          if $self->die_on_bad_response;
     }
 
     $self->_dump_data($response_data) if $self->dump_response_data;
@@ -202,21 +216,22 @@ sub process_request
     croak 'Missing request params' unless $params;
     croak 'Missing callback'       unless $callback;
 
-    my $response = $self->request($params, $args);
+    my $response_data = $self->request($params, $args);
 
     my $data = undef;
 
-    if ($response->{stat} eq 'ok')
+    if ($response_data->{stat} eq 'ok')
     {
         try
         {
-            $data = $callback->($response);
+            $data = $callback->($response_data);
         };
     }
 
     unless (defined $data)
     {
-        confess 'Invalid API response data' if $self->die_on_bad_response;
+        confess "Invalid API response data:\n" . dump($response_data) . "\n"
+          if $self->die_on_bad_response;
     }
 
     $self->_dump_data($data) if $self->dump_api_results;

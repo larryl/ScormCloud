@@ -77,10 +77,11 @@ sub getScormCloudObject
         die_on_bad_response => 1,
 
         #dump_request_url    => 1,
-        dump_response_xml   => 1,
-        dump_response_data  => 1,
+        dump_response_xml  => 1,
+        dump_response_data => 1,
+
         #dump_api_results    => 1,
-                          );
+                                      );
 }
 
 1;
