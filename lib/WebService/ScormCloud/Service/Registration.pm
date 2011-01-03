@@ -70,14 +70,16 @@ sub getRegistrationResult
         },
         {
          xml_parser => {
-                     ForceArray => [qw(activity comment interaction objective)],
-                     GroupTags  => {
-                                   'children'              => 'activity',
-                                   'comments_from_learner' => 'comment',
-                                   'comments_from_lms'     => 'comment',
-                                   'interactions'          => 'interaction',
-                                   'objectives'            => 'objective',
-                                  },
+                        ForceArray =>
+                          [qw(activity comment response interaction objective)],
+                        GroupTags => {
+                                      'children'              => 'activity',
+                                      'comments_from_learner' => 'comment',
+                                      'comments_from_lms'     => 'comment',
+                                      'correct_responses'     => 'response',
+                                      'interactions'          => 'interaction',
+                                      'objectives'            => 'objective',
+                                     },
                        }
         }
     );
