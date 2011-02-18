@@ -5,17 +5,27 @@ use warnings;
 
 use Test::More tests => 7;
 
+diag("Testing WebService::ScormCloud $WebService::ScormCloud::VERSION, Perl $], $^X");
+
+my @modules;
+
 BEGIN
 {
-    use_ok('WebService::ScormCloud');
-    use_ok('WebService::ScormCloud::Types');
-    use_ok('WebService::ScormCloud::Service');
-    use_ok('WebService::ScormCloud::Service::Course');
-    use_ok('WebService::ScormCloud::Service::Debug');
-    use_ok('WebService::ScormCloud::Service::Registration');
-    use_ok('WebService::ScormCloud::Service::Reporting');
+    @modules = qw(
+      WebService::ScormCloud
+      WebService::ScormCloud::Types
+      WebService::ScormCloud::Service
+      WebService::ScormCloud::Service::Course
+      WebService::ScormCloud::Service::Debug
+      WebService::ScormCloud::Service::Registration
+      WebService::ScormCloud::Service::Reporting
+    );
+
+    foreach my $module (@modules)
+    {
+        use_ok($module);
+    }
 }
 
-diag(
-    "Testing WebService::ScormCloud $WebService::ScormCloud::VERSION, Perl $], $^X"
-);
+done_testing(scalar @modules);
+

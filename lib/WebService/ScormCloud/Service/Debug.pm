@@ -69,7 +69,7 @@ application ID and secret key are valid.
 
 =cut
 
-sub authPing
+sub authPing    ## no critic (NamingConventions::Capitalization)
 {
     my ($self) = @_;
 
@@ -90,7 +90,7 @@ UTC and is formatted as "YYYYMMDDhhmmss".
 
 =cut
 
-sub getTime
+sub getTime    ## no critic (NamingConventions::Capitalization)
 {
     my ($self) = @_;
 

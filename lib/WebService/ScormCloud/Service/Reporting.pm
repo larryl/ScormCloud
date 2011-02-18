@@ -55,7 +55,7 @@ The hash might be empty in case of failure.
 
 =cut
 
-sub getAccountInfo
+sub getAccountInfo    ## no critic (NamingConventions::Capitalization)
 {
     my ($self) = @_;
 

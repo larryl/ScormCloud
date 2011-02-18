@@ -18,6 +18,10 @@ our $VERSION = '0.01';
 
     use WebService::ScormCloud::Types;
 
+=head1 DESCRIPTION
+
+Moose type definitions for L<WebService::ScormCloud>.
+
 =cut
 
 use LWP::UserAgent;
@@ -58,6 +62,10 @@ coerce 'WebService::ScormCloud::Types::URI' => from 'Str' => via
 1;
 
 __END__
+
+=head1 SEE ALSO
+
+L<Moose::Util::TypeConstraints>
 
 =head1 AUTHOR
 

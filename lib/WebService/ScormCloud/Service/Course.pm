@@ -48,11 +48,11 @@ Given a course ID, returns true if that course exists.
 
 =cut
 
-sub courseExists
+sub courseExists    ## no critic (NamingConventions::Capitalization)
 {
     my ($self, $course_id) = @_;
 
-    croak "Missing course_id" unless $course_id;
+    croak 'Missing course_id' unless $course_id;
 
     return $self->process_request(
         {method => 'course.exists', courseid => $course_id},
@@ -70,11 +70,11 @@ Given a course ID, returns course metadata.
 
 =cut
 
-sub getMetadata
+sub getMetadata    ## no critic (NamingConventions::Capitalization)
 {
     my ($self, $course_id) = @_;
 
-    croak "Missing course_id" unless $course_id;
+    croak 'Missing course_id' unless $course_id;
 
     return $self->process_request(
         {method => 'course.getMetadata', courseid => $course_id},
@@ -114,7 +114,7 @@ pattern.)  So to match e.g. any courses that begin with "ABC":
 
 =cut
 
-sub getCourseList
+sub getCourseList    ## no critic (NamingConventions::Capitalization)
 {
     my ($self, $filters) = @_;
 
@@ -128,7 +128,7 @@ sub getCourseList
         sub {
             my ($response) = @_;
 
-            die unless exists $response->{courselist};
+            die "bad\n" unless exists $response->{courselist};
             if ($response->{courselist})
             {
                 return $response->{courselist};

@@ -3,10 +3,12 @@
 use strict;
 use warnings;
 
+use File::Spec;
 use Test::More tests => 24;
 use Test::Exception;
 
-require './t/_test_util.pl';
+use lib File::Spec->curdir;
+require File::Spec->catfile('t', '_test_util.pl');
 
 my $SAMPLE_UPLOAD_FILE      = 'api-sample-upload.zip';
 my $SAMPLE_UPLOAD_FILE_PATH = './blib/' . $SAMPLE_UPLOAD_FILE;

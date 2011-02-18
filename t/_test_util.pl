@@ -1,7 +1,12 @@
+#!perl -T
 
+use strict;
+use warnings;
+
+use File::Spec;
 use WebService::ScormCloud;
 
-use constant CFGFILE => './blib/api-info.cfg';
+use constant CFGFILE => File::Spec->catfile('blib', 'api-info.cfg');
 
 use constant SERVICE_URL => 'http://cloud.scorm.com/api';
 
@@ -15,12 +20,12 @@ sub createTestConfigInfo
     }
 
     diag('Please enter your ScormCloud AppID:');
-    $AppID = <STDIN>;
+    my $AppID = <STDIN>;
     chomp $AppID;
     print $fh "$AppID\n";
 
     diag('Please enter your ScormCloud SecretKey:');
-    $SecretKey = <STDIN>;
+    my $SecretKey = <STDIN>;
     chomp $SecretKey;
     print $fh "$SecretKey\n";
 
@@ -28,7 +33,7 @@ sub createTestConfigInfo
          . "(hit return for default: "
          . SERVICE_URL
          . ")");
-    $ServiceURL = <STDIN>;
+    my $ServiceURL = <STDIN>;
     chomp $ServiceURL;
     $ServiceURL ||= SERVICE_URL;
     print $fh "$ServiceURL\n";

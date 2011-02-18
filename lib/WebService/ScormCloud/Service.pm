@@ -42,6 +42,9 @@ use POSIX qw(strftime);
 use Try::Tiny;
 use XML::Simple;
 
+use Readonly;
+Readonly::Scalar my $DUMP_WIDTH => 40;
+
 =head1 METHODS
 
 =head2 request ( I<params> [ , I<args> ] )
@@ -69,22 +72,22 @@ sub request
     croak 'No method' unless $params->{method};
 
     my $top_level_namespace = $self->top_level_namespace;
-    unless ($params->{method} =~ /^$top_level_namespace[.]/)
+    unless ($params->{method} =~ /^$top_level_namespace[.]/xsm)
     {
-        $params->{method} = $top_level_namespace . '.' . $params->{method};
+        $params->{method} = $top_level_namespace . q{.} . $params->{method};
     }
 
     $params->{appid} ||= $self->app_id;
 
     $params->{ts} ||= strftime '%Y%m%d%H%M%S', gmtime;
 
-    my $sig = join '', map { $_ . $params->{$_} } sort keys %{$params};
+    my $sig = join q{}, map { $_ . $params->{$_} } sort keys %{$params};
     $params->{sig} = md5_hex($self->secret_key . $sig);
 
     my $uri = $self->service_url->clone;
     $uri->query_form($params);
 
-    $self->_dump_data($uri . '') if $self->dump_request_url;
+    $self->_dump_data($uri . q{}) if $self->dump_request_url;
 
     my %request_args = %{$args->{request_headers}};
 
@@ -100,13 +103,20 @@ sub request
         $request_args{Content}      = $args->{request_content};
     }
 
-    my $request;
+    my $http_request;
     {
-        no strict 'refs';
-        $request = $args->{request_method}->($uri, %request_args);
+        no strict 'refs';   ## no critic (TestingAndDebugging::ProhibitNoStrict)
+        $http_request = $args->{request_method}->($uri, %request_args);
     }
 
-    my $response = $self->lwp_user_agent->request($request);
+    return $self->_make_http_request($http_request, $args);
+}
+
+sub _make_http_request
+{
+    my ($self, $http_request, $args) = @_;
+
+    my $response = $self->lwp_user_agent->request($http_request);
 
     my $response_data = undef;
 
@@ -118,18 +128,18 @@ sub request
 
             # Add some extra handling in case we get an error response:
             #
-            my $ForceArray = delete $args->{xml_parser}->{ForceArray} || [];
-            my $GroupTags  = delete $args->{xml_parser}->{GroupTags}  || {};
-            push @{$ForceArray}, 'err', 'tracetext';
-            $GroupTags->{stacktrace} = 'tracetext';
+            my $force_array = delete $args->{xml_parser}->{ForceArray} || [];
+            my $group_tags  = delete $args->{xml_parser}->{GroupTags}  || {};
+            push @{$force_array}, 'err', 'tracetext';
+            $group_tags->{stacktrace} = 'tracetext';
 
             $response_data =
               XML::Simple->new->XMLin(
                                       $response->content,
                                       KeyAttr       => [],
-                                      SuppressEmpty => '',
-                                      ForceArray    => $ForceArray,
-                                      GroupTags     => $GroupTags,
+                                      SuppressEmpty => q{},
+                                      ForceArray    => $force_array,
+                                      GroupTags     => $group_tags,
                                       %{$args->{xml_parser}}
                                      ) || {};
 
@@ -180,7 +190,9 @@ sub _dump_data
 {
     my ($self, $data) = @_;
 
-    print '=' x 40, "\n", dump($data), "\n", '=' x 40, "\n";
+    print q{=} x $DUMP_WIDTH, "\n", dump($data), "\n", q{=} x $DUMP_WIDTH, "\n";
+
+    return;
 }
 
 =head2 process_request ( I<params>, I<callback> )

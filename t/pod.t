@@ -2,11 +2,21 @@
 
 use strict;
 use warnings;
+
 use Test::More;
 
-# Ensure a recent version of Test::Pod
+unless ($ENV{TEST_AUTHOR})
+{
+    plan skip_all => 'Set $ENV{TEST_AUTHOR} to a true value to run POD tests.';
+}
+
 my $min_tp = 1.22;
+
 eval "use Test::Pod $min_tp";
-plan skip_all => "Test::Pod $min_tp required for testing POD" if $@;
+if ($@)
+{
+    plan skip_all => "Test::Pod $min_tp required to test POD syntax";
+}
 
 all_pod_files_ok();
+

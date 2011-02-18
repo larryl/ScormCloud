@@ -46,11 +46,11 @@ Given a registration ID, returns registration results.
 
 =cut
 
-sub getRegistrationResult
+sub getRegistrationResult    ## no critic (NamingConventions::Capitalization)
 {
     my ($self, $registration_id, $results_format) = @_;
 
-    croak "Missing registration_id" unless $registration_id;
+    croak 'Missing registration_id' unless $registration_id;
 
     my %params = (
                   method => 'registration.getRegistrationResult',
@@ -115,7 +115,7 @@ pattern.)  So to match e.g. any courses that begin with "ABC":
 
 =cut
 
-sub getRegistrationList
+sub getRegistrationList    ## no critic (NamingConventions::Capitalization)
 {
     my ($self, $filters) = @_;
 
@@ -133,7 +133,7 @@ sub getRegistrationList
         sub {
             my ($response) = @_;
 
-            die unless exists $response->{registrationlist};
+            die "bad\n" unless exists $response->{registrationlist};
             if ($response->{registrationlist})
             {
                 return $response->{registrationlist};

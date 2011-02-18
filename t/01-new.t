@@ -3,9 +3,11 @@
 use strict;
 use warnings;
 
+use File::Spec;
 use Test::More tests => 12;
 
-require './t/_test_util.pl';
+use lib File::Spec->curdir;
+require File::Spec->catfile('t', '_test_util.pl');
 
 my ($AppID, $SecretKey, $ServiceURL) = getTestConfigInfo();
 

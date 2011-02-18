@@ -52,7 +52,7 @@ Get and return an upload token to be used with a file upload.
 
 =cut
 
-sub getUploadToken
+sub getUploadToken    ## no critic (NamingConventions::Capitalization)
 {
     my ($self) = @_;
 
@@ -73,7 +73,7 @@ upload.
 
 =cut
 
-sub getUploadProgress
+sub getUploadProgress    ## no critic (NamingConventions::Capitalization)
 {
     my ($self, $token) = @_;
 
@@ -98,7 +98,7 @@ Returns the generated destination path on the remote filesystem.
 
 =cut
 
-sub uploadFile
+sub uploadFile    ## no critic (NamingConventions::Capitalization)
 {
     my ($self, $file, $token) = @_;
 
@@ -125,7 +125,7 @@ Return a list of files that have been uploaded using the given AppID.
 
 =cut
 
-sub listFiles
+sub listFiles    ## no critic (NamingConventions::Capitalization)
 {
     my ($self) = @_;
 
@@ -134,7 +134,7 @@ sub listFiles
         sub {
             my ($response) = @_;
 
-            die unless exists $response->{dir};
+            die "bad\n" unless exists $response->{dir};
             if ($response->{dir}->{file})
             {
                 return $response->{dir}->{file};
@@ -158,7 +158,7 @@ request.
 
 =cut
 
-sub deleteFiles
+sub deleteFiles    ## no critic (NamingConventions::Capitalization)
 {
     my ($self, $file) = @_;
 
@@ -169,8 +169,8 @@ sub deleteFiles
         sub {
             my ($response) = @_;
 
-            die unless $response->{results}->[0]->{file} eq $file;
-            die unless $response->{results}->[0]->{deleted} eq 'true';
+            die "bad\n" unless $response->{results}->[0]->{file} eq $file;
+            die "bad\n" unless $response->{results}->[0]->{deleted} eq 'true';
             return 1;
         },
         {
