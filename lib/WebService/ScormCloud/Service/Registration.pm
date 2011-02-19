@@ -40,20 +40,20 @@ requires 'process_request';
 
 =head1 METHODS
 
-=head2 getRegistrationResult ( I<registration_id> [ , I<results_format> ] )
+=head2 createRegistration ( I<registration_id> [ , I<results_format> ] )
 
 Given a registration ID, returns registration results.
 
 =cut
 
-sub getRegistrationResult    ## no critic (NamingConventions::Capitalization)
+sub createRegistration    ## no critic (NamingConventions::Capitalization)
 {
     my ($self, $registration_id, $results_format) = @_;
 
     croak 'Missing registration_id' unless $registration_id;
 
     my %params = (
-                  method => 'registration.getRegistrationResult',
+                  method => 'registration.createRegistration',
                   regid  => $registration_id
                  );
     $params{resultsformat} = $results_format if $results_format;
@@ -83,6 +83,40 @@ sub getRegistrationResult    ## no critic (NamingConventions::Capitalization)
                        }
         }
     );
+}
+
+=head2 deleteRegistration ( I<registration_id> )
+
+Given a registration ID, delete the corresponding registration.
+
+Not implemented yet.
+
+=cut
+
+sub deleteRegistration    ## no critic (NamingConventions::Capitalization)
+{
+    my ($self, $registration_id) = @_;
+
+    croak 'Missing registration_id' unless $registration_id;
+
+    croak 'Not implemented yet.';
+}
+
+=head2 resetRegistration ( I<registration_id> )
+
+Given a registration ID, reset the corresponding registration.
+
+Not implemented yet.
+
+=cut
+
+sub resetRegistration    ## no critic (NamingConventions::Capitalization)
+{
+    my ($self, $registration_id) = @_;
+
+    croak 'Missing registration_id' unless $registration_id;
+
+    croak 'Not implemented yet.';
 }
 
 =head2 getRegistrationList ( [ I<filters> ] )
@@ -153,6 +187,123 @@ sub getRegistrationList    ## no critic (NamingConventions::Capitalization)
                        }
         }
     );
+}
+
+=head2 getRegistrationResult ( I<registration_id> [ , I<results_format> ] )
+
+Given a registration ID, returns registration results.
+
+Optional C<results_format> can be "course" (the default),
+"activity", or "full".
+
+=cut
+
+sub getRegistrationResult    ## no critic (NamingConventions::Capitalization)
+{
+    my ($self, $registration_id, $results_format) = @_;
+
+    croak 'Missing registration_id' unless $registration_id;
+
+    my %params = (
+                  method => 'registration.getRegistrationResult',
+                  regid  => $registration_id
+                 );
+    $params{resultsformat} = $results_format if $results_format;
+
+    return $self->process_request(
+        \%params,
+        sub {
+            my ($response) = @_;
+
+            return
+              ref($response->{registrationreport}) eq 'HASH'
+              ? $response->{registrationreport}
+              : undef;
+        },
+        {
+         xml_parser => {
+                        ForceArray =>
+                          [qw(activity comment response interaction objective)],
+                        GroupTags => {
+                                      'children'              => 'activity',
+                                      'comments_from_learner' => 'comment',
+                                      'comments_from_lms'     => 'comment',
+                                      'correct_responses'     => 'response',
+                                      'interactions'          => 'interaction',
+                                      'objectives'            => 'objective',
+                                     },
+                       }
+        }
+    );
+}
+
+=head2 getRegistrationListResults ( )
+
+Effectively, runs getRegistrationList to get all the registrations,
+and then runs getRegistrationResult on each of them.
+
+Not implemented yet.
+
+=cut
+
+sub getRegistrationListResults  ## no critic (NamingConventions::Capitalization)
+{
+    croak 'Not implemented yet.';
+}
+
+=head2 launchURL ( I<registration_id> )
+
+Given a registration ID, returns a URL that can be used in the
+browser to launch the test at cloud.scorm.com.
+
+Not implemented yet.
+
+=cut
+
+sub launchURL    ## no critic (NamingConventions::Capitalization)
+{
+    my ($self, $registration_id) = @_;
+
+    croak 'Missing registration_id' unless $registration_id;
+
+    croak 'Not implemented yet.';
+}
+
+=head2 resetGlobalObjectives ( I<registration_id> )
+
+Given a registration ID, reset any global objectives associated with
+the corresponding registration.
+
+Not implemented yet.
+
+=cut
+
+sub resetGlobalObjectives    ## no critic (NamingConventions::Capitalization)
+{
+    my ($self, $registration_id) = @_;
+
+    croak 'Missing registration_id' unless $registration_id;
+
+    croak 'Not implemented yet.';
+}
+
+=head2 updateLearnerInfo ( I<learner_id>, I<fname>, I<lname> [ , I<new_id> ] )
+
+Reset learner info previously given during registration creation.
+
+Not implemented yet.
+
+=cut
+
+sub updateLearnerInfo    ## no critic (NamingConventions::Capitalization)
+{
+    my ($self, $learner_id, $first_name, $last_name, $new_id) = @_;
+
+    croak 'Missing learner_id' unless $learner_id;
+    croak 'Missing first_name' unless $first_name;
+    croak 'Missing last_name'  unless $last_name;
+
+    croak 'Not implemented yet.';
 }
 
 1;
