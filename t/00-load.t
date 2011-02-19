@@ -5,7 +5,9 @@ use warnings;
 
 use Test::More tests => 7;
 
-diag("Testing WebService::ScormCloud $WebService::ScormCloud::VERSION, Perl $], $^X");
+diag(
+    "Testing WebService::ScormCloud $WebService::ScormCloud::VERSION, Perl $], $^X"
+);
 
 my @modules;
 
@@ -19,7 +21,7 @@ BEGIN
       WebService::ScormCloud::Service::Debug
       WebService::ScormCloud::Service::Registration
       WebService::ScormCloud::Service::Reporting
-    );
+      );
 
     foreach my $module (@modules)
     {
