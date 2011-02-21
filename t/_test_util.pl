@@ -19,23 +19,60 @@ sub createTestConfigInfo
         BAIL_OUT('Cannot open test config file for writing: ' . CFGFILE);
     }
 
-    diag('Please enter your ScormCloud AppID:');
-    my $AppID = <STDIN>;
-    chomp $AppID;
+    my $AppID;
+    if ($ENV{SCORM_CLOUD_APPID})
+    {
+        $AppID = $ENV{SCORM_CLOUD_APPID};
+        diag("\n", 'Using $ENV{SCORM_CLOUD_APPID}: ', $AppID);
+    }
+    else
+    {
+        diag("\n", '$ENV{SCORM_CLOUD_APPID} is not set.',
+             "\n", 'Please enter your ScormCloud AppID:');
+        $AppID = <STDIN>;
+        chomp $AppID;
+    }
     print $fh "$AppID\n";
 
-    diag('Please enter your ScormCloud SecretKey:');
-    my $SecretKey = <STDIN>;
-    chomp $SecretKey;
+    my $SecretKey;
+    if ($ENV{SCORM_CLOUD_SECRETKEY})
+    {
+        $SecretKey = $ENV{SCORM_CLOUD_SECRETKEY};
+        diag("\n", 'Using $ENV{SCORM_CLOUD_SECRETKEY}: ', $SecretKey);
+    }
+    else
+    {
+        diag("\n", '$ENV{SCORM_CLOUD_SECRETKEY} is not set.',
+             "\n", 'Please enter your ScormCloud SecretKey:');
+        $SecretKey = <STDIN>;
+        chomp $SecretKey;
+    }
     print $fh "$SecretKey\n";
 
-    diag(  "Please enter your ScormCloud ServiceURL:\n"
-         . "(hit return for default: "
-         . SERVICE_URL
-         . ")");
-    my $ServiceURL = <STDIN>;
-    chomp $ServiceURL;
-    $ServiceURL ||= SERVICE_URL;
+    my $ServiceURL;
+    if ($ENV{SCORM_CLOUD_SERVICEURL})
+    {
+        $ServiceURL = $ENV{SCORM_CLOUD_SERVICEURL};
+        if ($ServiceURL eq 'default')
+        {
+            $ENV{SCORM_CLOUD_SERVICEURL} = SERVICE_URL;
+            $ServiceURL = SERVICE_URL;
+        }
+        diag("\n", 'Using $ENV{SCORM_CLOUD_SERVICEURL}: ', $ServiceURL);
+    }
+    else
+    {
+        diag(
+             "\n",        '$ENV{SCORM_CLOUD_SERVICEURL} is not set.',
+             "\n",        '(You can set it to a URL, or "default".)',
+             "\n",        'Please enter your ScormCloud ServiceURL:',
+             "\n",        '(hit return for default: ',
+             SERVICE_URL, ')'
+            );
+        $ServiceURL = <STDIN>;
+        chomp $ServiceURL;
+        $ServiceURL ||= SERVICE_URL;
+    }
     print $fh "$ServiceURL\n";
 
     close $fh;
