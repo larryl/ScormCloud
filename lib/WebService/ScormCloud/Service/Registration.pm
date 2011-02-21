@@ -40,56 +40,92 @@ requires 'process_request';
 
 =head1 METHODS
 
-=head2 createRegistration ( I<registration_id> [ , I<results_format> ] )
+=head2 createRegistration ( I<course_id>, I<registration_id>, I<first_name>, I<last_name>, I<learner_id> [ , I<options_hashref> ] )
 
-Given a registration ID, returns registration results.
+Creates a new registration.
+
+Required arguments are:
+
+=over 4
+
+=item course_id
+
+=item registration_id
+
+=item first_name
+
+=item last_name
+
+=item learner_id
+
+=back
+
+Valid options include:
+
+=over 4
+
+=item email
+
+=item postbackurl
+
+=item authtype
+
+=item urlname
+
+=item urlpass
+
+=item resultsformat
+
+=item disableTracking
+
+=back
 
 =cut
 
-sub createRegistration    ## no critic (NamingConventions::Capitalization)
+sub createRegistration ## no critic (NamingConventions::Capitalization, Subroutines::ProhibitManyArgs)
 {
-    my ($self, $registration_id, $results_format) = @_;
+    my ($self, $course_id, $registration_id, $first_name, $last_name,
+        $learner_id, $opts)
+      = @_;
 
+    croak 'Missing course_id'       unless $course_id;
     croak 'Missing registration_id' unless $registration_id;
+    croak 'Missing first_name'      unless $first_name;
+    croak 'Missing last_name'       unless $last_name;
+    croak 'Missing learner_id'      unless $learner_id;
+
+    $opts ||= {};
 
     my %params = (
-                  method => 'registration.createRegistration',
-                  regid  => $registration_id
+                  method    => 'registration.createRegistration',
+                  courseid  => $course_id,
+                  regid     => $registration_id,
+                  fname     => $first_name,
+                  lname     => $last_name,
+                  learnerid => $learner_id,
                  );
-    $params{resultsformat} = $results_format if $results_format;
+
+    foreach my $opt (
+                     qw(email postbackurl authtype urlname urlpass
+                     resultsformat disableTracking)
+                    )
+    {
+        $params{$opt} = $opts->{$opt} if exists $opts->{$opt};
+    }
 
     return $self->process_request(
         \%params,
         sub {
             my ($response) = @_;
 
-            return
-              ref($response->{registrationreport}) eq 'HASH'
-              ? $response->{registrationreport}
-              : undef;
+            return exists $response->{success} ? 1 : 0;
         },
-        {
-         xml_parser => {
-                        ForceArray =>
-                          [qw(activity comment response interaction objective)],
-                        GroupTags => {
-                                      'children'              => 'activity',
-                                      'comments_from_learner' => 'comment',
-                                      'comments_from_lms'     => 'comment',
-                                      'correct_responses'     => 'response',
-                                      'interactions'          => 'interaction',
-                                      'objectives'            => 'objective',
-                                     },
-                       }
-        }
     );
 }
 
 =head2 deleteRegistration ( I<registration_id> )
 
 Given a registration ID, delete the corresponding registration.
-
-Not implemented yet.
 
 =cut
 
@@ -99,14 +135,22 @@ sub deleteRegistration    ## no critic (NamingConventions::Capitalization)
 
     croak 'Missing registration_id' unless $registration_id;
 
-    croak 'Not implemented yet.';
+    return $self->process_request(
+        {
+         method => 'registration.deleteRegistration',
+         regid  => $registration_id,
+        },
+        sub {
+            my ($response) = @_;
+
+            return exists $response->{success} ? 1 : 0;
+        },
+    );
 }
 
 =head2 resetRegistration ( I<registration_id> )
 
 Given a registration ID, reset the corresponding registration.
-
-Not implemented yet.
 
 =cut
 
@@ -116,7 +160,17 @@ sub resetRegistration    ## no critic (NamingConventions::Capitalization)
 
     croak 'Missing registration_id' unless $registration_id;
 
-    croak 'Not implemented yet.';
+    return $self->process_request(
+        {
+         method => 'registration.resetRegistration',
+         regid  => $registration_id,
+        },
+        sub {
+            my ($response) = @_;
+
+            return exists $response->{success} ? 1 : 0;
+        },
+    );
 }
 
 =head2 getRegistrationList ( [ I<filters> ] )
@@ -251,30 +305,57 @@ sub getRegistrationListResults  ## no critic (NamingConventions::Capitalization)
     croak 'Not implemented yet.';
 }
 
-=head2 launchURL ( I<registration_id> )
+=head2 launchURL ( I<registration_id> , I<$redirect_url> [ , I<options_hashref> ] )
 
-Given a registration ID, returns a URL that can be used in the
-browser to launch the test at cloud.scorm.com.
+Given a registration ID and redirect URL, returns a URL that can be
+used in the browser to launch the test at cloud.scorm.com.
 
-Not implemented yet.
+Valid options include:
+
+=over 4
+
+=item cssurl
+
+=item learnerTags
+
+=item courseTags
+
+=item registrationTags
+
+=item disableTracking
+
+=back
 
 =cut
 
 sub launchURL    ## no critic (NamingConventions::Capitalization)
 {
-    my ($self, $registration_id) = @_;
+    my ($self, $registration_id, $redirect_url, $opts) = @_;
 
     croak 'Missing registration_id' unless $registration_id;
+    croak 'Missing redirect_url'    unless $redirect_url;
 
-    croak 'Not implemented yet.';
+    $opts ||= {};
+
+    my %params = (
+                  method      => 'registration.launch',
+                  regid       => $registration_id,
+                  redirecturl => $redirect_url,
+                 );
+
+    foreach my $opt
+      qw(cssurl learnerTags courseTags registrationTags disableTracking)
+    {
+        $params{$opt} = $opts->{$opt} if exists $opts->{$opt};
+    }
+
+    return $self->request_uri(\%params);
 }
 
 =head2 resetGlobalObjectives ( I<registration_id> )
 
 Given a registration ID, reset any global objectives associated with
 the corresponding registration.
-
-Not implemented yet.
 
 =cut
 
@@ -284,7 +365,17 @@ sub resetGlobalObjectives    ## no critic (NamingConventions::Capitalization)
 
     croak 'Missing registration_id' unless $registration_id;
 
-    croak 'Not implemented yet.';
+    return $self->process_request(
+        {
+         method => 'registration.resetGlobalObjectives',
+         regid  => $registration_id,
+        },
+        sub {
+            my ($response) = @_;
+
+            return exists $response->{success} ? 1 : 0;
+        },
+    );
 }
 
 =head2 updateLearnerInfo ( I<learner_id>, I<fname>, I<lname> [ , I<new_id> ] )

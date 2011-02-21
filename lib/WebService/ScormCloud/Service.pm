@@ -47,27 +47,25 @@ Readonly::Scalar my $DUMP_WIDTH => 40;
 
 =head1 METHODS
 
-=head2 request ( I<params> [ , I<args> ] )
+=head2 request_uri ( I<params> )
 
-Make an API request:
-
-    my $parsed_response_data =
-      $ScormCloud->request(method => 'rustici.debug.authPing');
+Returns a URI object that would be used to make a ScormCloud API
+request.
 
 Note that you would not typically call this method directly - use
 the API methods defined in the L</API CLASSES> instead.
 
+The params hashref should contain all query params and values used
+in building the request query string.  At minimum it must include a
+value for "method".
+
 =cut
 
-sub request
+sub request_uri
 {
-    my ($self, $params, $args) = @_;
+    my ($self, $params) = @_;
 
-    $params                  ||= {};
-    $args                    ||= {};
-    $args->{request_method}  ||= 'GET';
-    $args->{request_headers} ||= {};
-    $args->{xml_parser}      ||= {};
+    $params ||= {};
 
     croak 'No method' unless $params->{method};
 
@@ -88,6 +86,32 @@ sub request
     $uri->query_form($params);
 
     $self->_dump_data($uri . q{}) if $self->dump_request_url;
+
+    return $uri;
+}
+
+=head2 request ( I<params> [ , I<args> ] )
+
+Make an API request:
+
+    my $parsed_response_data =
+      $ScormCloud->request(method => 'rustici.debug.authPing');
+
+Note that you would not typically call this method directly - use
+the API methods defined in the L</API CLASSES> instead.
+
+=cut
+
+sub request
+{
+    my ($self, $params, $args) = @_;
+
+    my $uri = $self->request_uri($params);
+
+    $args                    ||= {};
+    $args->{request_method}  ||= 'GET';
+    $args->{request_headers} ||= {};
+    $args->{xml_parser}      ||= {};
 
     my %request_args = %{$args->{request_headers}};
 
