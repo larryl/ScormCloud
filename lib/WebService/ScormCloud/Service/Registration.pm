@@ -88,11 +88,12 @@ sub createRegistration ## no critic (NamingConventions::Capitalization, Subrouti
         $learner_id, $opts)
       = @_;
 
-    croak 'Missing course_id'       unless $course_id;
-    croak 'Missing registration_id' unless $registration_id;
-    croak 'Missing first_name'      unless $first_name;
-    croak 'Missing last_name'       unless $last_name;
-    croak 'Missing learner_id'      unless $learner_id;
+    croak 'Missing course_id' unless defined $course_id && length $course_id;
+    croak 'Missing registration_id'
+      unless defined $registration_id && length $registration_id;
+    croak 'Missing first_name' unless defined $first_name && length $first_name;
+    croak 'Missing last_name'  unless defined $last_name  && length $last_name;
+    croak 'Missing learner_id' unless defined $learner_id && length $learner_id;
 
     $opts ||= {};
 
