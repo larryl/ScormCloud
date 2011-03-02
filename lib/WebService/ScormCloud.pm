@@ -116,6 +116,65 @@ has 'service_url' => (
                       default  => 'http://cloud.scorm.com/api',
                      );
 
+=item last_error_data
+
+Returns a listref representing the raw response data for the
+error(s) returned by the most recent ScormCloud service API call.
+
+The data will look like:
+
+    [
+        {
+         code => 100.
+         msg  => 'A general security error has occured',
+        }
+        ...
+    ]
+
+Useful if e.g. "die_on_bad_response" is set to false, and a service
+API call returns undef instead of the expected object.
+
+=cut
+
+has 'last_error_data' => (
+                         is       => 'rw',
+                         isa => 'ArrayRef',
+                         default => sub { return [] },
+                        );
+
+=item last_error_msg
+
+Return a error message representing the error(s) returned by the
+most recent ScormCloud service API call.
+
+Useful if e.g. "die_on_bad_response" is set to false, and a service
+API call returns undef instead of the expected object.
+
+=cut
+
+my %error_codes = (
+);
+
+sub last_error_msg
+{
+    my ($self) = @_;
+
+    my @msg = ();
+   
+    foreach my $error (@{$self->last_error_data})
+    {
+        my $msg = $error->{msg};
+        $msg =~ s/^\s+//;
+        $msg =~ s/\s+$//;
+        $msg =~ s/\s+/ /;
+        $msg =~ s/ associated with appid \[.*?\]//g;
+
+        push @msg, $msg;
+    }
+
+    return join("\n", @msg);
+}
+
 =item lwp_user_agent
 
 Set the user agent string used in API requests.  Defaults to "MyApp/1.0".

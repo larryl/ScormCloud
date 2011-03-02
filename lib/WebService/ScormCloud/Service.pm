@@ -142,6 +142,8 @@ sub _make_http_request
 
     my $response = $self->lwp_user_agent->request($http_request);
 
+    $self->last_error_data([]);
+
     my $response_data = undef;
 
     if ($response->is_success)
@@ -201,7 +203,10 @@ sub _make_http_request
     if ($response_data->{stat} eq 'fail')
     {
         $response_data->{err} ||= [{code => 999, msg => 'FAIL BUT NO ERR'}];
-        confess "Invalid API response data:\n" . dump($response_data) . "\n"
+
+        $self->last_error_data($response_data->{err});
+
+        croak "Invalid API response data:\n" . dump($response_data)
           if $self->die_on_bad_response;
     }
 
@@ -266,7 +271,7 @@ sub process_request
 
     unless (defined $data)
     {
-        confess "Invalid API response data:\n" . dump($response_data) . "\n"
+        croak "Invalid API response data:\n" . dump($response_data)
           if $self->die_on_bad_response;
     }
 
