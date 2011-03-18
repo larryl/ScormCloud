@@ -1,6 +1,31 @@
+
 use strict;
 use warnings;
-use ExtUtils::MakeMaker;
+
+use ExtUtils::MakeMaker qw(WriteMakefile prompt);
+
+require 't/_test_util_config.pl';
+
+mkdir 'blib' unless -d 'blib';
+
+print <<EOT;
+
+==
+== Live testing requires that you enter your
+== cloud.scorm.com AppId and SecretKey.
+==
+EOT
+
+my $answer = prompt('== Do you want to run the live tests?', 'no');
+if ($answer =~ /^y/i)
+{
+    createTestConfigInfo(skip_live_tests => 0);
+}
+else
+{
+    print "Live tests will be skipped.\n";
+    createTestConfigInfo(skip_live_tests => 1);
+}
 
 WriteMakefile(
     NAME          => 'WebService::ScormCloud',
@@ -24,6 +49,7 @@ WriteMakefile(
                   'Readonly'                     => 0,
                   'Test::Exception'              => 0,
                   'Test::More'                   => 0,
+                  'Time::Local'                  => 0,
                   'Try::Tiny'                    => 0,
                   'URI'                          => 0,
                   'XML::Simple'                  => 0,

@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 7;
+use Test::More;
 
 diag(
     "Testing WebService::ScormCloud $WebService::ScormCloud::VERSION, Perl $], $^X"

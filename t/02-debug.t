@@ -10,44 +10,50 @@ use Time::Local 'timegm';
 use lib File::Spec->curdir;
 require File::Spec->catfile('t', '_test_util.pl');
 
-my $ScormCloud = getScormCloudObject();
+my ($ScormCloud, $skip_live_tests) = getScormCloudObject();
 
-##########
+diag 'Live tests will be skipped' if $skip_live_tests;
 
 can_ok($ScormCloud, 'ping');
-is($ScormCloud->ping, 1, '$ScormCloud->ping');
-
-##########
-
 can_ok($ScormCloud, 'authPing');
-is($ScormCloud->authPing, 1, '$ScormCloud->authPing');
-
-##########
-
 can_ok($ScormCloud, 'getTime');
-my $got = $ScormCloud->getTime || '';
-if ($got =~ /\D/ || length($got) != 14)
+
+SKIP:
 {
-    fail("\$ScormCloud->getTime should be a timestamp\n\tgot: $got");
-}
-else
-{
-    my $now = timegm gmtime;    # "now" in GMT epoch seconds
+    skip 'Skipping live tests', 3 if $skip_live_tests;
 
-    my ($year, $mon, $day, $hour, $min, $sec) =
-      $got =~ /^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})$/;
+    ##########
 
-    $got = timegm $sec, $min, $hour, $day, ($mon - 1), ($year - 1900);
+    is($ScormCloud->ping, 1, '$ScormCloud->ping');
 
-    if (abs($got - $now) <= 5)    # allow a few seconds time lag
+    is($ScormCloud->authPing, 1, '$ScormCloud->authPing');
+
+    ##########
+
+    my $got = $ScormCloud->getTime || '';
+    if ($got =~ /\D/ || length($got) != 14)
     {
-        pass('$ScormCloud->getTime');
+        fail("\$ScormCloud->getTime should be a timestamp\n\tgot: $got");
     }
     else
     {
-        fail(  "\$ScormCloud->getTime mismatch\n"
-             . "\texpected: $now\n"
-             . "\tgot:      $got");
+        my $now = timegm gmtime;    # "now" in GMT epoch seconds
+
+        my ($year, $mon, $day, $hour, $min, $sec) =
+          $got =~ /^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})$/;
+
+        $got = timegm $sec, $min, $hour, $day, ($mon - 1), ($year - 1900);
+
+        if (abs($got - $now) <= 5)    # allow a few seconds time lag
+        {
+            pass('$ScormCloud->getTime');
+        }
+        else
+        {
+            fail(  "\$ScormCloud->getTime mismatch\n"
+                 . "\texpected: $now\n"
+                 . "\tgot:      $got");
+        }
     }
 }
 
