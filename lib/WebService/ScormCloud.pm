@@ -137,10 +137,10 @@ API call returns undef instead of the expected object.
 =cut
 
 has 'last_error_data' => (
-                         is       => 'rw',
-                         isa => 'ArrayRef',
-                         default => sub { return [] },
-                        );
+                          is      => 'rw',
+                          isa     => 'ArrayRef',
+                          default => sub { return [] },
+                         );
 
 =item last_error_msg
 
@@ -152,22 +152,21 @@ API call returns undef instead of the expected object.
 
 =cut
 
-my %error_codes = (
-);
+my %error_codes = ();
 
 sub last_error_msg
 {
     my ($self) = @_;
 
     my @msg = ();
-   
+
     foreach my $error (@{$self->last_error_data})
     {
         my $msg = $error->{msg};
-        $msg =~ s/^\s+//;
-        $msg =~ s/\s+$//;
-        $msg =~ s/\s+/ /;
-        $msg =~ s/ associated with appid \[.*?\]//g;
+        $msg =~ s/^\s+//msx;
+        $msg =~ s/\s+$//msx;
+        $msg =~ s/\s+/ /msx;
+        $msg =~ s/ associated with appid \[.*?\]//gmsx;
 
         push @msg, $msg;
     }

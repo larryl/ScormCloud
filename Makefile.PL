@@ -38,7 +38,6 @@ WriteMakefile(
                   'Carp'                         => 0,
                   'Data::Dump'                   => 0,
                   'Digest::MD5'                  => 0,
-                  'ExtUtils::MakeMaker'          => 0,
                   'File::Spec'                   => 0,
                   'HTTP::Request::Common'        => 0,
                   'LWP::UserAgent'               => 0,
