@@ -75,7 +75,7 @@ called post-construction as object set/get methods.
 
 =over 4
 
-=item app_id
+=item B<app_id>
 
 B<Required.>  An application ID generated for your login at
 L<http://cloud.scorm.com/>.
@@ -88,7 +88,7 @@ has 'app_id' => (
                  isa      => 'Str',
                 );
 
-=item secret_key
+=item B<secret_key>
 
 B<Required.>  A secret key that corresponds to the application ID,
 used for hashing parameters in the API request URLs.  Generated at
@@ -102,7 +102,7 @@ has 'secret_key' => (
                      isa      => 'Str',
                     );
 
-=item service_url
+=item B<service_url>
 
 The API service URL.  Defaults to "http://cloud.scorm.com/api".
 
@@ -116,7 +116,7 @@ has 'service_url' => (
                       default  => 'http://cloud.scorm.com/api',
                      );
 
-=item last_error_data
+=item B<last_error_data>
 
 Returns a listref representing the raw response data for the
 error(s) returned by the most recent ScormCloud service API call.
@@ -142,7 +142,7 @@ has 'last_error_data' => (
                           default => sub { return [] },
                          );
 
-=item last_error_msg
+=item B<last_error_msg>
 
 Return a error message representing the error(s) returned by the
 most recent ScormCloud service API call.
@@ -174,7 +174,7 @@ sub last_error_msg
     return join("\n", @msg);
 }
 
-=item lwp_user_agent
+=item B<lwp_user_agent>
 
 Set the user agent string used in API requests.  Defaults to "MyApp/1.0".
 
@@ -188,7 +188,7 @@ has 'lwp_user_agent' => (
                          default => 'MyApp/1.0',
                         );
 
-=item top_level_namespace
+=item B<top_level_namespace>
 
 Top-level namespace for API methods.  Defaults to "rustici".
 
@@ -201,7 +201,7 @@ has 'top_level_namespace' => (
                               default  => 'rustici',
                              );
 
-=item dump_request_url
+=item B<dump_request_url>
 
 Set to true to dump request URLs to STDOUT.  Default is false.
 
@@ -213,7 +213,7 @@ has 'dump_request_url' => (
                            default => 0,
                           );
 
-=item dump_response_xml
+=item B<dump_response_xml>
 
 Set to true to dump raw response XML to STDOUT.  Default is false.
 
@@ -225,7 +225,7 @@ has 'dump_response_xml' => (
                             default => 0,
                            );
 
-=item dump_response_data
+=item B<dump_response_data>
 
 Set to true to dump data from parsed response XML to STDOUT.
 Default is false.
@@ -240,7 +240,7 @@ has 'dump_response_data' => (
                              default => 0,
                             );
 
-=item dump_api_results
+=item B<dump_api_results>
 
 Set to true to dump results grabbed from response data by each API
 call.  Default is false.
@@ -255,7 +255,7 @@ has 'dump_api_results' => (
                            default => 0,
                           );
 
-=item die_on_bad_response
+=item B<die_on_bad_response>
 
 Set to true to die if the API response data is malformed or invalid
 for the given API method being called (mainly useful for testing).
@@ -307,6 +307,9 @@ L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=WebService-ScormCloud>.
 I will be notified, and then you'll automatically be notified of
 progress on your bug as I make changes.
 
+Patches more than welcome, especially via GitHub:
+L<https://github.com/larryl/ScormCloud>
+
 =head1 SUPPORT
 
 You can find documentation for this module with the perldoc command.
@@ -316,6 +319,10 @@ You can find documentation for this module with the perldoc command.
 You can also look for information at:
 
 =over 4
+
+=item * GitHub
+
+L<https://github.com/larryl/ScormCloud>
 
 =item * RT: CPAN's request tracker
 

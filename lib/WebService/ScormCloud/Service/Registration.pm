@@ -48,15 +48,15 @@ Required arguments are:
 
 =over 4
 
-=item course_id
+=item B<course_id>
 
-=item registration_id
+=item B<registration_id>
 
-=item first_name
+=item B<first_name>
 
-=item last_name
+=item B<last_name>
 
-=item learner_id
+=item B<learner_id>
 
 =back
 
@@ -64,19 +64,19 @@ Valid options include:
 
 =over 4
 
-=item email
+=item B<email>
 
-=item postbackurl
+=item B<postbackurl>
 
-=item authtype
+=item B<authtype>
 
-=item urlname
+=item B<urlname>
 
-=item urlpass
+=item B<urlpass>
 
-=item resultsformat
+=item B<resultsformat>
 
-=item disableTracking
+=item B<disableTracking>
 
 =back
 
@@ -184,11 +184,11 @@ to filter the returned list of registrations:
 
 =over 4
 
-=item filter
+=item B<filter>
 
 A regular expression for matching the registration ID
 
-=item coursefilter
+=item B<coursefilter>
 
 A regular expression for matching the course ID
 
@@ -315,15 +315,15 @@ Valid options include:
 
 =over 4
 
-=item cssurl
+=item B<cssurl>
 
-=item learnerTags
+=item B<learnerTags>
 
-=item courseTags
+=item B<courseTags>
 
-=item registrationTags
+=item B<registrationTags>
 
-=item disableTracking
+=item B<disableTracking>
 
 =back
 
@@ -416,6 +416,9 @@ Please report any bugs or feature requests to C<bug-scormcloud at rt.cpan.org>, 
 the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=WebService-ScormCloud>.  I will be notified, and then you'll
 automatically be notified of progress on your bug as I make changes.
 
+Patches more than welcome, especially via GitHub:
+L<https://github.com/larryl/ScormCloud>
+
 =head1 SUPPORT
 
 You can find documentation for this module with the perldoc command.
@@ -425,6 +428,10 @@ You can find documentation for this module with the perldoc command.
 You can also look for information at:
 
 =over 4
+
+=item * GitHub
+
+L<https://github.com/larryl/ScormCloud>
 
 =item * RT: CPAN's request tracker
 
