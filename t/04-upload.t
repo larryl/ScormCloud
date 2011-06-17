@@ -73,7 +73,7 @@ SKIP:
 
     $progress = $ScormCloud->getUploadProgress($token);
     isa_ok($progress, 'HASH', '$ScormCloud->getUploadProgress');
-    foreach my $key qw(bytes_read content_length percent_complete upload_id)
+    foreach my $key (qw(bytes_read content_length percent_complete upload_id))
     {
         ok($progress->{$key}, "\$ScormCloud->getUploadProgress->{$key} exists");
     }

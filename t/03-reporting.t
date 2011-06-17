@@ -51,7 +51,7 @@ SKIP:
 
     my $usage = $account_info->{usage};
 
-    foreach my $key qw(totalcourses totalregistrations)
+    foreach my $key (qw(totalcourses totalregistrations))
     {
         my $msg1 = "\$ScormCloud->getAccountInfo->{usage} includes $key";
         my $msg2 = "\$ScormCloud->getAccountInfo->{usage}->{$key} is numeric";

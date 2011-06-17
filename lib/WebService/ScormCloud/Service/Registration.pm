@@ -10,11 +10,11 @@ WebService::ScormCloud::Service::Registration - ScormCloud API "registration" na
 
 =head1 VERSION
 
-Version 0.02
+Version 0.03
 
 =cut
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 =head1 SYNOPSIS
 
@@ -212,7 +212,7 @@ sub getRegistrationList    ## no critic (NamingConventions::Capitalization)
 
     my %params = (method => 'registration.getRegistrationList');
 
-    foreach my $key qw(filter coursefilter)
+    foreach my $key (qw(filter coursefilter))
     {
         $params{$key} = $filters->{$key} if $filters->{$key};
     }
@@ -344,8 +344,8 @@ sub launchURL    ## no critic (NamingConventions::Capitalization)
                   redirecturl => $redirect_url,
                  );
 
-    foreach my $opt
-      qw(cssurl learnerTags courseTags registrationTags disableTracking)
+    foreach my $opt (
+             qw(cssurl learnerTags courseTags registrationTags disableTracking))
     {
         $params{$opt} = $opts->{$opt} if exists $opts->{$opt};
     }
