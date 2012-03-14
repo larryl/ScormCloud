@@ -192,6 +192,14 @@ A regular expression for matching the registration ID
 
 A regular expression for matching the course ID
 
+=item B<after>
+
+A date: return registrations updated (strictly) after that date
+
+=item B<until>
+
+A date: Return registrations updated up to and including that date.
+
 =back
 
 Note that any filter regular expressions must match the B<entire>
@@ -201,6 +209,11 @@ pattern.)  So to match e.g. any courses that begin with "ABC":
     {coursefilter => '^ABC'}    # THIS WILL NOT WORK
 
     {coursefilter => 'ABC.*'}   # This will work
+
+
+Although date formats are flexible ISO 8601 is the recommended format.
+
+e.g. 2012-03-02T21:39:23Z
 
 =cut
 
@@ -212,7 +225,7 @@ sub getRegistrationList    ## no critic (NamingConventions::Capitalization)
 
     my %params = (method => 'registration.getRegistrationList');
 
-    foreach my $key (qw(filter coursefilter))
+    foreach my $key (qw(filter coursefilter after until))
     {
         $params{$key} = $filters->{$key} if $filters->{$key};
     }
