@@ -1,5 +1,12 @@
 Revision history for WebService::ScormCloud
 
+0.04    2012-04-01
+
+  [NEW FEATURES]
+
+  * Added "after" and "until" filters to getRegistrationList
+    (Thanks Wes Cravens https://github.com/wcravens)
+
 0.03    2011-06-17
 
   [OTHER]
